@@ -23,6 +23,8 @@ public class HyperTicTacToe
 		 
 		 // Creates a TicTacToe object of N by N size
 		 ticTacToe = new TicTacToe(rows, cols);
+		 
+		 
 	}
 }
 
