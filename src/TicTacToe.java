@@ -36,6 +36,11 @@ public class TicTacToe
 	private boolean isFull = false;
 	
 	/**
+	 * 
+	 */
+	private int numberOfBoard= 0;
+	
+	/**
 	 * Constructor of the class
 	 */
 	public TicTacToe(int rows, int cols)
@@ -44,6 +49,14 @@ public class TicTacToe
 		this.cols = cols;
 		
 		this.ticTacToe = new char[rows][cols];
+	}
+	
+	/**
+	 * 
+	 */
+	public void setBoardNumber(int number)
+	{
+		this.numberOfBoard= number;
 	}
 	
 	/**
