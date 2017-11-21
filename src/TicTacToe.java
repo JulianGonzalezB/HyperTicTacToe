@@ -26,7 +26,7 @@ public class TicTacToe
 	private boolean isFull = false;
 	
 	/**
-	 * 
+	 * A variable to identify the number of the current board
 	 */
 	private int numberOfBoard= 0;
 	
