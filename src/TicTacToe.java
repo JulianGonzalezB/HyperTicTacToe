@@ -15,16 +15,6 @@ public class TicTacToe
 	private char boardState = '-';
 	
 	/**
-	 * Variable to store the amount of rows of the board
-	 */
-	private int rows = 0;
-	
-	/**
-	 * Variable to store the amount of columns of the board
-	 */
-	private int cols = 0;
-	
-	/**
 	 * Matrix that will hold the board itself, it will have 3X3 
 	 * dimensions
 	 */
@@ -36,19 +26,17 @@ public class TicTacToe
 	private boolean isFull = false;
 	
 	/**
-	 * 
+	 * A variable to identify the number of the current board
 	 */
 	private int numberOfBoard= 0;
 	
 	/**
 	 * Constructor of the class
 	 */
-	public TicTacToe(int rows, int cols)
+	public TicTacToe()
 	{
-		this.rows = rows;
-		this.cols = cols;
-		
-		this.ticTacToe = new char[rows][cols];
+		// Creates a char matrix of 3x3 dimensions
+		this.ticTacToe = new char[3][3];
 	}
 	
 	/**
@@ -115,13 +103,13 @@ public class TicTacToe
 		boolean isFull = true;
 		
 		// Checks every row to see if the player won
-		for ( int row = 0; row < this.rows; ++row)
+		for ( int row = 0; row < this.ticTacToe.length; ++row)
 		{
 			// Variable to check if the player won a row
 			boolean wonRow = true;
 			
 			// Checks all the columns
-			for ( int col = 0; col < this.cols; ++col)
+			for ( int col = 0; col < this.ticTacToe.length; ++col)
 			{
 				// Checks if all the cells are filled by the player
 				if ( this.ticTacToe[row][col] != player)
@@ -158,11 +146,11 @@ public class TicTacToe
 	public boolean checkVertical( char player)
 	{
 		// Checks every row to see if the player won
-		for ( int col = 0; col < this.cols; ++col)
+		for ( int col = 0; col < this.ticTacToe.length; ++col)
 		{
 			boolean wonCol = true;
 					
-			for ( int row = 0; row < this.rows; ++row)
+			for ( int row = 0; row < this.ticTacToe.length; ++row)
 			{
 				if ( this.ticTacToe[row][col] != player)
 				{
@@ -190,12 +178,12 @@ public class TicTacToe
 		boolean wonDiag = true;
 		
 		// Checks the first diagonal
-		for ( int row = 0, col = 0 ; row < this.rows; ++col, ++row)
+		for ( int row = 0, col = 0 ; row < this.ticTacToe.length; ++col, ++row)
 		{
 			if ( this.ticTacToe[row][col] != player)
 				{
 					wonDiag = false;
-					row = this.rows;
+					row = this.ticTacToe.length;
 				}
 		}
 		
@@ -203,12 +191,12 @@ public class TicTacToe
 			return true;
 		
 		// Checks every row to see if the player won
-		for ( int row = 0, col = 0 ; row < this.rows; ++col, ++row)
+		for ( int row = 0, col = 0 ; row < this.ticTacToe.length; ++col, ++row)
 				{
 					if ( this.ticTacToe[row][col] != player)
 						{
 							wonDiag = false;
-							row = this.rows;
+							row = this.ticTacToe.length;
 						}
 				}
 						
