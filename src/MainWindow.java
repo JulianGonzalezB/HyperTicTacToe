@@ -7,11 +7,11 @@ import javax.swing.JTextArea;
 
 public class MainWindow extends JFrame
 {
-	private String playerOne= null;
+	private String playerOne= "Julian";
 	
-	private String playerTwo= null;
+	private String playerTwo= "Jostin";
 	
-	private String currentPlayer= null;
+	private String currentPlayer= "Satan";
 	
 	private int turns= 0;
 	
@@ -26,6 +26,9 @@ public class MainWindow extends JFrame
 		
 		BorderLayout mainLayout= new BorderLayout();
 		this.setLayout(mainLayout);
+		
+		this.createBoard();
+		this.creategameIndicators();
 	}
 	
 	/**
@@ -33,7 +36,8 @@ public class MainWindow extends JFrame
 	 */
 	public void createBoard()
 	{
-		MainBoard mainBoard= new MainBoard();
+		MainBoard mainBoard= new MainBoard(this.getWidth(), this.getHeight());
+		//mainBoard.drawBigSimbol("O", 1, 1);
 		this.add(mainBoard, BorderLayout.CENTER);
 	}
 	
@@ -46,11 +50,11 @@ public class MainWindow extends JFrame
 		indicators.setLayout(new BorderLayout());
 		Font font = new Font("Names", Font.CENTER_BASELINE, 15);
 		
-		JLabel labelPlayer = new JLabel("Player:" + this.currentPlayer);
+		JLabel labelPlayer = new JLabel("Player :" + this.currentPlayer);
 		labelPlayer.setFont(font);
 		indicators.add(labelPlayer, BorderLayout.LINE_START);
 		
-		JLabel labelTurns = new JLabel("turns:" + this.turns);
+		JLabel labelTurns = new JLabel("turns :" + this.turns);
 		labelTurns.setFont(font);
 		indicators.add(labelTurns, BorderLayout.LINE_END);
 		

@@ -17,7 +17,7 @@ public class HyperTicTacToe
 	Scanner input = null;
 	TicTacToe ticTacToe = null;
 	
-	public void main (String[] args)
+	public static void main (String[] args)
 	{
 		HyperTicTacToe solution = new HyperTicTacToe();
 		solution.run();
@@ -25,6 +25,12 @@ public class HyperTicTacToe
 	
 	public void run()
 	{
+		this.mainWindow= new MainWindow();
+		
+		this.mainWindow.setVisible(true);
+		
+		this.mainWindow.setPlayers(this.playerOne, this.playerTwo);
+		
 		input = new Scanner(System.in);
 		
 		this.playerOne= input.next();
@@ -33,11 +39,7 @@ public class HyperTicTacToe
 		
 		this.createGameMatrices();
 		
-		this.mainWindow= new MainWindow();
 		
-		this.mainWindow.setVisible(true);
-		
-		this.mainWindow.setPlayers(this.playerOne, this.playerTwo);
 	}
 	
 	/**
