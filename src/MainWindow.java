@@ -17,13 +17,15 @@ import javax.swing.JTextArea;
  */
 public class MainWindow extends JFrame implements MouseListener, ActionListener
 {
-	private String playerOne= "Julian";
+	private String playerOne= null;
 	
-	private String playerTwo= "Jostin";
+	private String playerTwo= null;
 	
-	private String currentPlayer= "Satan";
+	private String currentPlayer= "Player 1";
 	
-	private int turns= 0;
+	private int currentPlayerNumber= 1;
+	
+	private int turns= 1;
 	
 	private MainBoard mainBoard= null;
 	
@@ -62,17 +64,27 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 	/**
 	 * 
 	 */
+	public void setPlayers(String playerOne, String playerTwo)
+	{
+		this.playerOne= "Julian";
+		this.playerTwo= "Jostin";
+		this.currentPlayer= this.playerOne;
+	}
+	
+	/**
+	 * 
+	 */
 	public void creategameIndicators()
 	{
 		this.indicators= new JPanel();
 		indicators.setLayout(new BorderLayout());
 		Font font = new Font("Names", Font.CENTER_BASELINE, 15);
 		
-		this.labelPlayer = new JLabel("Player :" + this.currentPlayer);
+		this.labelPlayer = new JLabel("Player : " + this.currentPlayer);
 		labelPlayer.setFont(font);
 		indicators.add(labelPlayer, BorderLayout.LINE_START);
 		
-		this.labelTurns = new JLabel("turns :" + this.turns);
+		this.labelTurns = new JLabel("turns : " + this.turns);
 		labelTurns.setFont(font);
 		indicators.add(labelTurns, BorderLayout.LINE_END);
 		
@@ -82,55 +94,39 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 	/**
 	 * 
 	 */
-	public void setPlayers(String playerOne, String playerTwo)
+	public void setCurrentPlayer()
 	{
-		this.playerOne= playerOne;
-		this.playerTwo= playerTwo;
-	}
-	
-	/**
-	 * 
-	 */
-	public void setCurrentPlayer(int player)
-	{
-		if(player == 1)
+		if(this.currentPlayerNumber == 1)
 		{
 			this.currentPlayer= this.playerOne;
 		}
-		else if(player == 2)
+		else if(this.currentPlayerNumber == 2)
 		{
 			this.currentPlayer= this.playerTwo;
 		}
-	}
-	
-	/**
-	 * 
-	 * 
-	 */
-	public void changePlayer()
-	{
-		if(this.currentPlayer.equals(this.playerOne))
-		{
-			this.currentPlayer = this.playerTwo;
-		}
-		else
-		{
-			this.currentPlayer = this.playerOne;
-		}
+		
+		this.labelPlayer.setText("Player : " + this.currentPlayer);
+		this.labelTurns.setText("turns : " + this.turns);
+		this.turns++;
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent event)
 	{
-		String simbol = "O";
-		if(this.currentPlayer.equals(this.playerTwo))
+		if(this.currentPlayerNumber == 1)
 		{
-			simbol= "X";
+			this.currentPlayerNumber= 2;
+			
+			this.setCurrentPlayer();
+		}
+		else
+		{
+			this.currentPlayerNumber= 1;
+			
+			this.setCurrentPlayer();
 		}
 		
-		this.changePlayer();
-		
-		//this.mainBoard.drawSimbol(simbol, event.getX(), event.getY());
+		this.mainBoard.changeState(event.getX(), event.getY());
 	}
 
 	@Override

@@ -16,6 +16,20 @@ public class MainBoard extends JPanel
 	
 	private int scaleWidth= 0;
 	
+	private boolean bigSimbol= false;
+	
+	private boolean simbol= false;
+	
+	private int x= 0;
+	
+	private int y= 0;
+	
+	private int row= 0;
+	
+	private int col= 0;
+	
+	private String currentSimbol= null;
+	
 	public MainBoard(int width, int height)
 	{
 		this.scaleWidth= (width - 30) / 8;
@@ -42,7 +56,11 @@ public class MainBoard extends JPanel
 				this.createMiniBoards(g, row, col, "blue");
 			}
 		}
-		this.drawSimbol("X", 90, 90, g);
+		
+		if(this.simbol)
+		{
+			this.drawSimbol(this.currentSimbol, this.x, this.y, g);
+		}
 	}
 	
 	/**
@@ -127,11 +145,13 @@ public class MainBoard extends JPanel
 		
 		int verticalJump= row * 2 * hieght / 3;
 		
+		int x1= this.scaleWidth + horizontalJump;
+		
+		int y1= this.scaleWidth + horizontalJump - 7;
+		
 		if(simbol.equals("X"))
 		{
-			int x1= this.scaleWidth + horizontalJump;
 			
-			int y1= this.scaleWidth + horizontalJump - 7;
 			
 			g.drawLine( x1, y1, x1 + 2 * this.scaleWidth / 3, y1 + 2 * this.scaleHeight / 3);
 			
@@ -139,7 +159,34 @@ public class MainBoard extends JPanel
 		}
 		else
 		{
-			g.drawOval(4 * this.scaleWidth / 3 + horizontalJump, 5 + verticalJump + this.scaleHeight, 4 * this.scaleWidth / 3, 4 * this.scaleWidth / 3);
+			g.drawOval(x1 + horizontalJump, y1, 2 * this.scaleWidth / 3, 2 * this.scaleWidth / 3);
 		}
+	}
+	
+	/**
+	 * 
+	 */
+	public void changeState( int x, int y)
+	{
+		this.simbol= true;
+		
+		this.x= x;
+		
+		this.y= y;
+		
+		if(this.currentSimbol== null)
+		{
+			this.currentSimbol= "X";
+		}
+		else if(this.currentSimbol.equals("X"))
+		{
+			this.currentSimbol= "O";
+		}
+		else
+		{
+			this.currentSimbol= "X";
+		}
+		
+		this.repaint();
 	}
 }
