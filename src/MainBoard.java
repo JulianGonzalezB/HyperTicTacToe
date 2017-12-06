@@ -42,6 +42,7 @@ public class MainBoard extends JPanel
 				this.createMiniBoards(g, row, col, "blue");
 			}
 		}
+		this.drawSimbol("X", 90, 90, g);
 	}
 	
 	/**
@@ -72,24 +73,73 @@ public class MainBoard extends JPanel
 	
 	/**
 	 * 
+	 * @param simbol
+	 * @param x
+	 * @param y
 	 */
-	public void drawBigSimbol(String simbol, int row, int col)
+	public void drawSimbol(String simbol, int x, int y, Graphics g)
 	{
-		Graphics g= getGraphics();
+		int xPosition= x / ( 2 * this.scaleWidth / 3);
+		
+		int yPosition= y / ( 2* this.scaleHeight / 3);
+		
+		this.drawXorO(simbol, yPosition, xPosition, this.scaleWidth, this.scaleHeight, g);
+	}
+	
+	/**
+	 * 
+	 */
+	public void drawBigSimbol(Graphics g, String simbol, int row, int col)
+	{
 		this.createMiniBoards(g, row, col, "black");
-		g.setColor(Color.BLUE);
+		
+		this.drawXorO(simbol, row, col, g);
+	}
+	
+	/**
+	 * 
+	 */
+	public void drawXorO(String simbol, int row, int col, Graphics g)
+	{
+		g.setColor(Color.RED);
 		
 		int horizontalJump= col * 2 * this.scaleWidth;
+		
 		int verticalJump= row * 2 * this.scaleHeight;
 		
 		if(simbol.equals("X"))
 		{
 			g.drawLine(this.scaleWidth + horizontalJump, verticalJump + this.scaleHeight, 3 * this.scaleWidth + horizontalJump, verticalJump + 3 * this.scaleHeight);
-			g.drawLine(3* this.scaleWidth + horizontalJump, verticalJump + this.scaleHeight, this.scaleWidth + horizontalJump, verticalJump + 3 * this.scaleHeight);
+			
+			g.drawLine(3* this.scaleHeight + horizontalJump, verticalJump + this.scaleHeight, this.scaleWidth + horizontalJump, verticalJump + 3 * this.scaleHeight);
 		}
 		else
 		{
-			g.drawOval(2 * this.scaleWidth + horizontalJump, verticalJump + 2 * this.scaleHeight, 2 * this.scaleWidth, 2 * this.scaleWidth);
+			g.drawOval(4 * this.scaleWidth / 3 + horizontalJump, 5 + verticalJump + this.scaleHeight, 4 * this.scaleWidth / 3, 4 * this.scaleWidth / 3);
+		}
+	}
+	
+	public void drawXorO(String simbol, int row, int col, int width, int hieght, Graphics g)
+	{
+		g.setColor(Color.RED);
+		
+		int horizontalJump= col * 2 * width / 3;
+		
+		int verticalJump= row * 2 * hieght / 3;
+		
+		if(simbol.equals("X"))
+		{
+			int x1= this.scaleWidth + horizontalJump;
+			
+			int y1= this.scaleWidth + horizontalJump - 7;
+			
+			g.drawLine( x1, y1, x1 + 2 * this.scaleWidth / 3, y1 + 2 * this.scaleHeight / 3);
+			
+			g.drawLine(x1, y1 + 2 * this.scaleHeight / 3, x1 + 2 * this.scaleWidth / 3, y1);
+		}
+		else
+		{
+			g.drawOval(4 * this.scaleWidth / 3 + horizontalJump, 5 + verticalJump + this.scaleHeight, 4 * this.scaleWidth / 3, 4 * this.scaleWidth / 3);
 		}
 	}
 }
