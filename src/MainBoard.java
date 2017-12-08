@@ -16,9 +16,9 @@ public class MainBoard extends JPanel
 	
 	private int scaleWidth= 0;
 	
-	private boolean bigSimbol= false;
+	private boolean bigsymbol= false;
 	
-	private boolean simbol= false;
+	private boolean symbol= false;
 	
 	private int x= 0;
 	
@@ -28,11 +28,13 @@ public class MainBoard extends JPanel
 	
 	private int col= 0;
 	
-	private String currentSimbol= null;
+	private boolean highlight= false;
+	
+	private String currentsymbol= null;
 	
 	public MainBoard(int width, int height)
 	{
-		this.scaleWidth= (width - 30) / 8;
+		this.scaleWidth= (width) / 8;
 		this.scaleHeight= (height - 30) / 8;
 	}
 	
@@ -44,11 +46,22 @@ public class MainBoard extends JPanel
 		super.paintComponent(g);
 		this.setBackground(Color.BLACK);
 		g.setColor(Color.WHITE);
+		
+		//vertical lines
 		g.drawLine(3 * this.scaleWidth, this.scaleHeight, 3 * this.scaleWidth, 7 * this.scaleHeight);
 		g.drawLine(5 * this.scaleWidth, this.scaleHeight, 5 * this.scaleWidth, 7 * this.scaleHeight);
+		
+		//Horizontal lines
 		g.drawLine(this.scaleWidth, 3 * this.scaleHeight, 7 * this.scaleWidth, 3 * this.scaleHeight);
 		g.drawLine(this.scaleWidth, 5 * this.scaleHeight, 7 * this.scaleWidth, 5 * this.scaleHeight);
 		
+		//highlight the corresponding miniBoard
+		if( this.highlight)
+		{
+			//this.highlightBoard(this.x, this.y, g);
+		}
+		
+		//Draw the miniBoards
 		for(int row= 0; row < 3; row++)
 		{
 			for(int col= 0; col < 3; col++)
@@ -57,9 +70,15 @@ public class MainBoard extends JPanel
 			}
 		}
 		
-		if(this.simbol)
+		//draw the corresponding symbol
+		if(this.symbol)
 		{
-			this.drawSimbol(this.currentSimbol, this.x, this.y, g);
+			this.drawsymbol(this.currentsymbol, this.x, this.y, g);
+			this.highlight= true;
+		}
+		else if(this.bigsymbol)
+		{
+			this.drawBigsymbol(g, this.currentsymbol, this.x, this.y);
 		}
 	}
 	
@@ -91,33 +110,33 @@ public class MainBoard extends JPanel
 	
 	/**
 	 * 
-	 * @param simbol
+	 * @param symbol
 	 * @param x
 	 * @param y
 	 */
-	public void drawSimbol(String simbol, int x, int y, Graphics g)
+	public void drawsymbol(String symbol, int x, int y, Graphics g)
 	{
-		int xPosition= x / ( 2 * this.scaleWidth / 3);
+		int xPosition= (x + 19) / ( 2 * this.scaleWidth / 3);
 		
 		int yPosition= y / ( 2* this.scaleHeight / 3);
 		
-		this.drawXorO(simbol, yPosition, xPosition, this.scaleWidth, this.scaleHeight, g);
+		this.drawXorO(symbol, yPosition, xPosition, this.scaleWidth, this.scaleHeight, g);
 	}
 	
 	/**
 	 * 
 	 */
-	public void drawBigSimbol(Graphics g, String simbol, int row, int col)
+	public void drawBigsymbol(Graphics g, String symbol, int row, int col)
 	{
 		this.createMiniBoards(g, row, col, "black");
 		
-		this.drawXorO(simbol, row, col, g);
+		this.drawXorO(symbol, row, col, g);
 	}
 	
 	/**
 	 * 
 	 */
-	public void drawXorO(String simbol, int row, int col, Graphics g)
+	public void drawXorO(String symbol, int row, int col, Graphics g)
 	{
 		g.setColor(Color.RED);
 		
@@ -125,7 +144,7 @@ public class MainBoard extends JPanel
 		
 		int verticalJump= row * 2 * this.scaleHeight;
 		
-		if(simbol.equals("X"))
+		if(symbol.equals("X"))
 		{
 			g.drawLine(this.scaleWidth + horizontalJump, verticalJump + this.scaleHeight, 3 * this.scaleWidth + horizontalJump, verticalJump + 3 * this.scaleHeight);
 			
@@ -137,56 +156,97 @@ public class MainBoard extends JPanel
 		}
 	}
 	
-	public void drawXorO(String simbol, int row, int col, int width, int hieght, Graphics g)
+	/**
+	 * Method for printing "X" or "O" in small cells of miniBoards
+	 * @param symbol is the symbol to print
+	 * @param row
+	 * @param col
+	 * @param width
+	 * @param hieght
+	 * @param g
+	 */
+	public void drawXorO(String symbol, int row, int col, int width, int height, Graphics g)
 	{
 		g.setColor(Color.RED);
 		
-		int horizontalJump= col * 2 * width / 3;
+		int horizontalJump= (col - 2) * 2 * width / 3;
 		
-		int verticalJump= row * 2 * hieght / 3;
+		int verticalJump= (row - 3) * 2 * height / 3;
 		
 		int x1= this.scaleWidth + horizontalJump;
 		
-		int y1= this.scaleWidth + horizontalJump - 7;
+		int y1= this.scaleHeight + verticalJump;
 		
-		if(simbol.equals("X"))
+		if(symbol.equals("X"))
 		{
 			
-			
+			// print the X
 			g.drawLine( x1, y1, x1 + 2 * this.scaleWidth / 3, y1 + 2 * this.scaleHeight / 3);
 			
 			g.drawLine(x1, y1 + 2 * this.scaleHeight / 3, x1 + 2 * this.scaleWidth / 3, y1);
 		}
 		else
 		{
-			g.drawOval(x1 + horizontalJump, y1, 2 * this.scaleWidth / 3, 2 * this.scaleWidth / 3);
+			// print the O
+			g.drawOval(x1, y1, 2 * this.scaleWidth / 3, 2 * this.scaleHeight / 3);
 		}
 	}
 	
 	/**
 	 * 
 	 */
-	public void changeState( int x, int y)
+	public void changeState( int x, int y, String symbolControl)
 	{
-		this.simbol= true;
+		if(symbolControl.equals("symbol"))
+		{
+			this.symbol= true;
+			this.bigsymbol= false;
+		}
+		else if(symbolControl.equals("bigsymbol"))
+		{
+			this.symbol= false;
+			this.bigsymbol= true;
+		}
 		
 		this.x= x;
 		
 		this.y= y;
 		
-		if(this.currentSimbol== null)
+		if(this.currentsymbol== null)
 		{
-			this.currentSimbol= "X";
+			this.currentsymbol= "X";
 		}
-		else if(this.currentSimbol.equals("X"))
+		else if(this.currentsymbol.equals("X"))
 		{
-			this.currentSimbol= "O";
+			this.currentsymbol= "O";
 		}
 		else
 		{
-			this.currentSimbol= "X";
+			this.currentsymbol= "X";
 		}
 		
 		this.repaint();
+	}
+	
+	/**
+	 * Method for highlighting a board
+	 * @param col
+	 * @param row
+	 * @param g
+	 */
+	public void highlightBoard(int col, int row, Graphics g)// Cambiar lo de los Jump para que no se repita
+	{
+		int horizontalJump= col * 2 * this.scaleWidth;
+		
+		int verticalJump= row * 2 * this.scaleHeight;
+		
+		g.setColor(Color.LIGHT_GRAY);
+		
+		//Draw a rectangle
+		g.drawRect(this.scaleWidth + horizontalJump, verticalJump + this.scaleHeight, 3 * this.scaleWidth + horizontalJump, verticalJump + 3 * this.scaleHeight);
+		
+		//Fill the rectangle
+		g.fillRect(col, row, this.scaleWidth * 2, this.scaleHeight * 2);
+		
 	}
 }

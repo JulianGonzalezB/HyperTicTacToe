@@ -35,6 +35,10 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 	
 	private JLabel labelTurns = null;
 	
+	private int boardLimitY= 480;
+	
+	private int boardLimitX= 640;
+	
 	/**
 	 * 
 	 */
@@ -99,10 +103,14 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 		if(this.currentPlayerNumber == 1)
 		{
 			this.currentPlayer= this.playerOne;
+			
+			this.currentPlayerNumber= 2;
 		}
 		else if(this.currentPlayerNumber == 2)
 		{
 			this.currentPlayer= this.playerTwo;
+			
+			this.currentPlayerNumber= 1;
 		}
 		
 		this.labelPlayer.setText("Player : " + this.currentPlayer);
@@ -113,20 +121,17 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 	@Override
 	public void mouseClicked(MouseEvent event)
 	{
-		if(this.currentPlayerNumber == 1)
-		{
-			this.currentPlayerNumber= 2;
-			
-			this.setCurrentPlayer();
-		}
-		else
-		{
-			this.currentPlayerNumber= 1;
-			
-			this.setCurrentPlayer();
-		}
+		int x= event.getX();
 		
-		this.mainBoard.changeState(event.getX(), event.getY());
+		int y= event.getY();
+		
+		//If the player clicked over a valid space
+		if(x > this.boardLimitX / 8 && x < 7 * this.boardLimitX / 8 && y > this.boardLimitY / 8 && y < 7 * this.boardLimitY / 8)
+		{
+			this.setCurrentPlayer();
+			
+			this.mainBoard.changeState(event.getX(), event.getY(), "symbol");
+		}
 	}
 
 	@Override
