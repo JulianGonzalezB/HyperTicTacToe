@@ -11,11 +11,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 /**
- * 
- * 
+ * A class for the main window of the game. The main window contains the main board and pass information to it from the control class Game.
+ * This class contains too the name of the players and the number of turns.
  *
  */
-public class MainWindow extends JFrame implements MouseListener, ActionListener
+public class MainWindow extends JFrame
 {
 	private String playerOne= null;
 	
@@ -40,7 +40,7 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 	private int boardLimitX= 640;
 	
 	/**
-	 * 
+	 * Constructor of the class
 	 */
 	public MainWindow()
 	{
@@ -53,30 +53,33 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 		
 		this.createBoard();
 		this.creategameIndicators();
-		this.addMouseListener(this);
 	}
 	
 	/**
-	 * 
+	 * Method for creating and adding a main board to the main window of the game.
 	 */
 	public void createBoard()
 	{
+		//Creates a new instance of MainBoard with its width and its height
 		this.mainBoard= new MainBoard(this.getWidth(), this.getHeight());
 		this.add(mainBoard, BorderLayout.CENTER);
 	}
 	
 	/**
-	 * 
+	 * A method that sets the name of the 2 players. CurrentPlayer is set as playerOne because playerOne plays first
+	 * @param playerOne is the name of the first player
+	 * @param playerTwo is the name of the second player
 	 */
 	public void setPlayers(String playerOne, String playerTwo)
 	{
-		this.playerOne= "Julian";
-		this.playerTwo= "Jostin";
+		this.playerOne= playerOne;
+		this.playerTwo= playerTwo;
 		this.currentPlayer= this.playerOne;
 	}
 	
 	/**
-	 * 
+	 * A method that creates 2 indicators, one for the name of the player who is playing in the current turn 
+	 * And one indicator for the number of turns played
 	 */
 	public void creategameIndicators()
 	{
@@ -96,7 +99,8 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 	}
 	
 	/**
-	 * 
+	 * A methods that sets the current playing who have to play according with the last player who played.
+	 * This method change directly the corresponding label
 	 */
 	public void setCurrentPlayer()
 	{
@@ -117,54 +121,18 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 		this.labelTurns.setText("turns : " + this.turns);
 		this.turns++;
 	}
-
-	@Override
-	public void mouseClicked(MouseEvent event)
+	
+	/**
+	 * This method communicates the state of the game to the main board. This method pass two arrays with all the information
+	 * the main board needs for repaint.
+	 * @param allPositions is the array that contains the state of all cells of all 9 mini-boards while they are in play.
+	 * @param bigPositions is the array that contains the general state (if is in play or not and what player won each miniboard) 
+	 * of each of the 9 mini-boards.
+	 */
+	public void communicateEvent(String[][] allPositions, String[][] bigPositions)
 	{
-		int x= event.getX();
+		this.setCurrentPlayer();
 		
-		int y= event.getY();
-		
-		//If the player clicked over a valid space
-		if(x > this.boardLimitX / 8 && x < 7 * this.boardLimitX / 8 && y > this.boardLimitY / 8 && y < 7 * this.boardLimitY / 8)
-		{
-			this.setCurrentPlayer();
-			
-			this.mainBoard.changeState(event.getX(), event.getY(), "symbol");
-		}
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent arg0)
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseExited(MouseEvent arg0)
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mousePressed(MouseEvent arg0)
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent arg0)
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		this.mainBoard.newPlay(allPositions, bigPositions);
 	}
 }

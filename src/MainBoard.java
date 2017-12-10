@@ -16,22 +16,23 @@ public class MainBoard extends JPanel
 	
 	private int scaleWidth= 0;
 	
-	private boolean bigsymbol= false;
+	private String[][] allPositions= null;
 	
-	private boolean symbol= false;
+	private String[][] bigPositions= null;
 	
-	private int x= 0;
+	private int nextRow= 0;
 	
-	private int y= 0;
+	private int nextCol= 0;
 	
-	private int row= 0;
+	private boolean highlight= true;
 	
-	private int col= 0;
+	private String currentsymbol= "X";
 	
-	private boolean highlight= false;
-	
-	private String currentsymbol= null;
-	
+	/**
+	 * The constructor of the class. it sets a scale for the width and the height to work with.
+	 * @param width
+	 * @param height
+	 */
 	public MainBoard(int width, int height)
 	{
 		this.scaleWidth= (width) / 8;
@@ -58,7 +59,8 @@ public class MainBoard extends JPanel
 		//highlight the corresponding miniBoard
 		if( this.highlight)
 		{
-			//this.highlightBoard(this.x, this.y, g);
+			//Highlight the next board to be played in.
+			this.highlightBoard( this.nextCol, this.nextRow, g);
 		}
 		
 		//Draw the miniBoards
@@ -70,20 +72,15 @@ public class MainBoard extends JPanel
 			}
 		}
 		
-		//draw the corresponding symbol
-		if(this.symbol)
-		{
-			this.drawsymbol(this.currentsymbol, this.x, this.y, g);
-			this.highlight= true;
-		}
-		else if(this.bigsymbol)
-		{
-			this.drawBigsymbol(g, this.currentsymbol, this.x, this.y);
-		}
+		this.checkBigBoard(g);
 	}
 	
 	/**
 	 * 
+	 * @param color
+	 * @param row
+	 * @param col
+	 * @param g
 	 */
 	public void createMiniBoards(Graphics g, int row, int col, String color)
 	{
@@ -116,17 +113,17 @@ public class MainBoard extends JPanel
 	 */
 	public void drawsymbol(String symbol, int x, int y, Graphics g)
 	{
-		int xPosition= (x + 19) / ( 2 * this.scaleWidth / 3);
-		
-		int yPosition= y / ( 2* this.scaleHeight / 3);
-		
-		this.drawXorO(symbol, yPosition, xPosition, this.scaleWidth, this.scaleHeight, g);
+		this.drawXorO(symbol, x, y, this.scaleWidth, this.scaleHeight, g);
 	}
 	
 	/**
 	 * 
+	 * @param symbol
+	 * @param row
+	 * @param col
+	 * @param g
 	 */
-	public void drawBigsymbol(Graphics g, String symbol, int row, int col)
+	public void drawBigsymbol(Graphics g, int row, int col, String symbol)
 	{
 		this.createMiniBoards(g, row, col, "black");
 		
@@ -135,6 +132,10 @@ public class MainBoard extends JPanel
 	
 	/**
 	 * 
+	 * @param symbol
+	 * @param row
+	 * @param col
+	 * @param g
 	 */
 	public void drawXorO(String symbol, int row, int col, Graphics g)
 	{
@@ -148,7 +149,7 @@ public class MainBoard extends JPanel
 		{
 			g.drawLine(this.scaleWidth + horizontalJump, verticalJump + this.scaleHeight, 3 * this.scaleWidth + horizontalJump, verticalJump + 3 * this.scaleHeight);
 			
-			g.drawLine(3* this.scaleHeight + horizontalJump, verticalJump + this.scaleHeight, this.scaleWidth + horizontalJump, verticalJump + 3 * this.scaleHeight);
+			g.drawLine(3 * this.scaleWidth + horizontalJump, verticalJump + this.scaleHeight, this.scaleWidth + horizontalJump, verticalJump + 3 * this.scaleHeight);
 		}
 		else
 		{
@@ -158,12 +159,12 @@ public class MainBoard extends JPanel
 	
 	/**
 	 * Method for printing "X" or "O" in small cells of miniBoards
-	 * @param symbol is the symbol to print
-	 * @param row
-	 * @param col
-	 * @param width
-	 * @param hieght
-	 * @param g
+	 * @param symbol is the symbol to draw
+	 * @param row is the row of the cell
+	 * @param col is the column of the cell
+	 * @param width is the width for each cell
+	 * @param hieght is the height for each cell
+	 * @param g is an instance of the class Graphics
 	 */
 	public void drawXorO(String symbol, int row, int col, int width, int height, Graphics g)
 	{
@@ -194,47 +195,75 @@ public class MainBoard extends JPanel
 	
 	/**
 	 * 
+	 * @param allPositions
+	 * @param bigPositions
 	 */
-	public void changeState( int x, int y, String symbolControl)
+	public void newPlay( String[][] allPositions, String[][] bigPositions)
 	{
-		if(symbolControl.equals("symbol"))
-		{
-			this.symbol= true;
-			this.bigsymbol= false;
-		}
-		else if(symbolControl.equals("bigsymbol"))
-		{
-			this.symbol= false;
-			this.bigsymbol= true;
-		}
+		this.allPositions= allPositions;
 		
-		this.x= x;
-		
-		this.y= y;
-		
-		if(this.currentsymbol== null)
-		{
-			this.currentsymbol= "X";
-		}
-		else if(this.currentsymbol.equals("X"))
-		{
-			this.currentsymbol= "O";
-		}
-		else
-		{
-			this.currentsymbol= "X";
-		}
+		this.bigPositions= bigPositions;
 		
 		this.repaint();
 	}
 	
 	/**
-	 * Method for highlighting a board
-	 * @param col
-	 * @param row
-	 * @param g
+	 * A method for checking the general state of each mini-board. This method calls the method that draw a big symbol if necessary
+	 * @param g is an instance of the class Graphics
 	 */
-	public void highlightBoard(int col, int row, Graphics g)// Cambiar lo de los Jump para que no se repita
+	public void checkBigBoard(Graphics g)
+	{
+		for(int row= 0; row < 3; row++)
+		{
+			for(int col= 0; col < 3; col++)
+			{
+				if(this.bigPositions[row][col].equals("-"))
+				{
+					this.checkMiniBoards(row, col, g);
+				}
+				else if(this.bigPositions[row][col] != null)
+				{
+					this.drawBigsymbol(g, row, col, this.bigPositions[row][col]);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * A method for checking each cell of the mini-board still in play. This method calls the method that draw a symbol if necessary
+	 * @param row
+	 * @param col
+	 * @param g is an instance of the class Graphics
+	 */
+	public void checkMiniBoards(int row, int col, Graphics g)
+	{
+		int rowFactor= row * 3;
+		
+		int colFactor= col * 3;
+		
+		int rowLimit= 3 + rowFactor;
+		
+		int colLimit= 3 + colFactor;
+		
+		for(int currentRow= rowFactor; currentRow < rowLimit ; currentRow++)
+		{
+			for(int currentCol= colFactor; currentCol < colLimit; currentCol++)
+			{
+				if(this.allPositions[row][col].equals("x") || this.allPositions[row][col].equals("o"))
+				{
+					this.drawsymbol(this.allPositions[row][col], row, col, g);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Method for highlighting a mini-board
+	 * @param col is the column of the mini-board
+	 * @param row is the row if the mini-board
+	 * @param g is an instance of the class Graphics
+	 */
+	public void highlightBoard(int col, int row, Graphics g)
 	{
 		int horizontalJump= col * 2 * this.scaleWidth;
 		
@@ -242,11 +271,8 @@ public class MainBoard extends JPanel
 		
 		g.setColor(Color.LIGHT_GRAY);
 		
-		//Draw a rectangle
-		g.drawRect(this.scaleWidth + horizontalJump, verticalJump + this.scaleHeight, 3 * this.scaleWidth + horizontalJump, verticalJump + 3 * this.scaleHeight);
-		
-		//Fill the rectangle
-		g.fillRect(col, row, this.scaleWidth * 2, this.scaleHeight * 2);
+		//Draw the fill of a rectangle in light gray
+		g.fillRect(this.scaleWidth + horizontalJump,verticalJump + this.scaleHeight, this.scaleWidth * 2, this.scaleHeight * 2);
 		
 	}
 }
