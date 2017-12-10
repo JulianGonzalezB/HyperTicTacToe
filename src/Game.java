@@ -43,6 +43,7 @@ public class Game
 		this.ticTacToesMatrix = new TicTacToe[NUMBER_OF_ROWS][NUMBER_OF_COLUMNS];
 		
 		// Calls the method to create the matrix and fill it with new ticTacToes
+		fillTicTacToeMatrix();
 		
 		// Calls the method to follow the interaction of the game
 		runGame();
@@ -73,10 +74,50 @@ public class Game
 	 */
 	public void runGame()
 	{
+		char currentPlayer = 'X';
+		
 		// While the game has not finished
 		while ( this.hyperBoard.getBoardState() == '-')
 		{
+			// Calls the method to do a move
+			playerMove( currentPlayer);
 			
+			// Switches the players turn
+			currentPlayer = ( currentPlayer == 'X') ? 'O' : 'X'; 
+			
+			// Calls the method to check if the state of the board changed
+			this.hyperBoard.checkState();
 		}
+	}
+	
+	/**
+	 * Method to to all the procedures needed in a turn
+	 * @param currentPlayer 'X' or 'O'
+	 */
+	public void playerMove( char currentPlayer)
+	{
+		checkGameState();
+	}
+
+	public void checkGameState()
+	{
+		for ( int row = 0; row < NUMBER_OF_ROWS; ++row )
+		{
+			for ( int col = 0; col < NUMBER_OF_COLUMNS; ++col )
+			{
+				this.ticTacToesMatrix[row][col].checkState();
+				
+				if ( this.ticTacToesMatrix[row][col].getBoardState() != '-')
+				{
+					printBoardState(this.ticTacToesMatrix[row][col].getBoardState(), 
+							this.ticTacToesMatrix[row][col].getBoardNumber());
+				}
+			}
+		}
+	}
+	
+	public void printBoardState( char state, int boardNumber)
+	{
+		
 	}
 }

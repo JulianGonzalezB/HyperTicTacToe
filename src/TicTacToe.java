@@ -28,7 +28,7 @@ public class TicTacToe
 	/**
 	 * A variable to identify the number of the current board
 	 */
-	private int numberOfBoard= 0;
+	private int boardNumber= 0;
 	
 	/**
 	 * Constructor of the class
@@ -44,7 +44,12 @@ public class TicTacToe
 	 */
 	public void setBoardNumber(int number)
 	{
-		this.numberOfBoard= number;
+		this.boardNumber = number;
+	}
+	
+	public int getBoardNumber()
+	{
+		return this.boardNumber;
 	}
 	
 	/**
@@ -97,7 +102,7 @@ public class TicTacToe
 	 * @param player it will be 'X' or 'O' 
 	 * @return true if the board was one by the player
 	 */
-	public boolean checkHorizontal( char player)
+	private boolean checkHorizontal( char player)
 	{
 		// Variable to determine if the board is full
 		boolean isFull = true;
@@ -143,7 +148,7 @@ public class TicTacToe
 	 * @param player it will be 'X' or 'O' 
 	 * @return true if the board was one by the player
 	 */
-	public boolean checkVertical( char player)
+	private boolean checkVertical( char player)
 	{
 		// Checks every row to see if the player won
 		for ( int col = 0; col < this.ticTacToe.length; ++col)
@@ -173,7 +178,7 @@ public class TicTacToe
 	 * @param player it will be 'X' or 'O' 
 	 * @return true if the board was one by the player
 	 */
-	public boolean checkDiagonal( char player)
+	private boolean checkDiagonal( char player)
 	{
 		boolean wonDiag = true;
 		
@@ -192,13 +197,13 @@ public class TicTacToe
 		
 		// Checks every row to see if the player won
 		for ( int row = 0, col = 0 ; row < this.ticTacToe.length; ++col, ++row)
-				{
-					if ( this.ticTacToe[row][col] != player)
-						{
-							wonDiag = false;
-							row = this.ticTacToe.length;
-						}
-				}
+		{
+			if ( this.ticTacToe[row][col] != player)
+			{
+				wonDiag = false;
+				row = this.ticTacToe.length;
+			}
+		}
 						
 		return false;
 	}
