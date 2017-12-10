@@ -1,10 +1,15 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 /**
  * Controller to the hyperTicTacToe game. It controls the 
  * rounds of the players by determining where each player
  * does his move and checking if the game is won or lost
  * by one of the players
  */
-public class Game
+public class Game implements MouseListener, ActionListener
 {
 	/**
 	 * Constants to determine the number of rows and columns 
@@ -118,6 +123,46 @@ public class Game
 	
 	public void printBoardState( char state, int boardNumber)
 	{
+		
+	}
+	
+	@Override
+	public void mouseClicked(MouseEvent event)
+	{
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void mouseExited(MouseEvent arg0)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
 		
 	}
 }
