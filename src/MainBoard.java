@@ -16,9 +16,9 @@ public class MainBoard extends JPanel
 	
 	private int scaleWidth= 0;
 	
-	private String[][] allPositions= null;
+	private char[][] allPositions= null;
 	
-	private String[][] bigPositions= null;
+	private char[][] bigPositions= null;
 	
 	private int nextRow= 0;
 	
@@ -198,7 +198,7 @@ public class MainBoard extends JPanel
 	 * @param allPositions
 	 * @param bigPositions
 	 */
-	public void newPlay( String[][] allPositions, String[][] bigPositions)
+	public void newPlay( char[][] allPositions, char[][] bigPositions)
 	{
 		this.allPositions= allPositions;
 		
@@ -217,13 +217,13 @@ public class MainBoard extends JPanel
 		{
 			for(int col= 0; col < 3; col++)
 			{
-				if(this.bigPositions[row][col].equals("-"))
+				if(this.bigPositions[row][col] == '-')
 				{
 					this.checkMiniBoards(row, col, g);
 				}
-				else if(this.bigPositions[row][col] != null)
+				else if( this.bigPositions[row][col] != ' ')
 				{
-					this.drawBigsymbol(g, row, col, this.bigPositions[row][col]);
+					this.drawBigsymbol(g, row, col, "" + this.bigPositions[row][col]);
 				}
 			}
 		}
@@ -249,9 +249,9 @@ public class MainBoard extends JPanel
 		{
 			for(int currentCol= colFactor; currentCol < colLimit; currentCol++)
 			{
-				if(this.allPositions[row][col].equals("x") || this.allPositions[row][col].equals("o"))
+				if(this.allPositions[row][col] == 'X' || this.allPositions[row][col] == 'O')
 				{
-					this.drawsymbol(this.allPositions[row][col], row, col, g);
+					this.drawsymbol( "" + this.allPositions[row][col], row, col, g);
 				}
 			}
 		}

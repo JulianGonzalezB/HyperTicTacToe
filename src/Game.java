@@ -129,7 +129,12 @@ public class Game implements MouseListener, ActionListener
 	@Override
 	public void mouseClicked(MouseEvent event)
 	{
+		// Detect where the player clicked
+		// Fill the corresponding board on the position clicked
 		
+		// Creates a reference to the MainWindow class
+		// MainWindow mainWindow =  new MainWindow();
+		// mainWindow.communicateEvent(this.ticTacToesMatrix, this.hyperBoard);
 	}
 
 	@Override

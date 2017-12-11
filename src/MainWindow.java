@@ -129,7 +129,7 @@ public class MainWindow extends JFrame
 	 * @param bigPositions is the array that contains the general state (if is in play or not and what player won each miniboard) 
 	 * of each of the 9 mini-boards.
 	 */
-	public void communicateEvent(String[][] allPositions, String[][] bigPositions)
+	public void communicateEvent(char[][] allPositions, char[][] bigPositions)
 	{
 		this.setCurrentPlayer();
 		
