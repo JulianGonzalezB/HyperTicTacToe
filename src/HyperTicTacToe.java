@@ -8,7 +8,7 @@ public class HyperTicTacToe
 	
 	private String playerTwo = null;
 	
-	private Game game = null;
+	private HyperTicTacToeGame game = null;
 	
 	Scanner input = null;
 	
@@ -23,7 +23,7 @@ public class HyperTicTacToe
 	public void run()
 	{
 		// Creates a new Game
-		game = new Game();
+		game = new HyperTicTacToeGame();
 				
 		this.mainWindow= new MainWindow();
 		

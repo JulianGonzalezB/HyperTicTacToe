@@ -1,15 +1,10 @@
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
 /**
  * Controller to the hyperTicTacToe game. It controls the 
  * rounds of the players by determining where each player
  * does his move and checking if the game is won or lost
  * by one of the players
  */
-public class Game implements MouseListener, ActionListener
+public class HyperTicTacToeGame
 {
 	/**
 	 * Constants to determine the number of rows and columns 
@@ -36,16 +31,12 @@ public class Game implements MouseListener, ActionListener
 	 */
 	private TicTacToe hyperBoard = null;
 	
-	private int boardLimitY= 480;
-	
-	private int boardLimitX= 640;
-	
 	private char currentPlayer = ' ';
 	
 	/**
 	 * Constructor of the class
 	 */
-	public Game() 
+	public HyperTicTacToeGame() 
 	{
 		// Creates a new TicTacToe board of 3x3 dimensions
 		this.hyperBoard = new TicTacToe();
@@ -93,77 +84,31 @@ public class Game implements MouseListener, ActionListener
 		this.hyperBoard.checkState();
 	}
 	
-	@Override
-	public void mouseClicked(MouseEvent event)
+	/**
+	 * 
+	 * @param bigPosX
+	 * @param bigPosY
+	 * @param posX
+	 * @param posY
+	 */
+	public void checkPlayerMove(int bigPosX, int bigPosY, int posX, int posY)
 	{
-		// Gets the position of where the mouse was clicked
-		int bigPosX =  event.getX() / 160; 
-		int bigPosY =  event.getY() / 120;
-		
-		// If the player clicked on a valid position
-		if( bigPosX == this.boardLimitX && bigPosY == this.boardLimitY )
+		// If the cell clicked had not been used
+		if ( this.ticTacToesMatrix[bigPosX][bigPosY].get(posX, posY) == '-')
 		{
-			int xPosition = (event.getX() + 19) / 100;
-			int yPosition = event.getY() / 80; 
+			// Sets the char of the cell to the char of the current player ('X' or 'O')
+			this.ticTacToesMatrix[bigPosX][bigPosY].set(posX,posY, this.currentPlayer);
 			
-			int posX = xPosition % 3;
-			int posY = yPosition % 3;
+			// Calls the method to detect if the last move changed the state of the board
+			checkBoard(bigPosX, bigPosY);
 			
-			// If the cell clicked had not been used
-			if ( this.ticTacToesMatrix[bigPosX][bigPosY].get(posX, posY) == '-')
+			// If the game already ended
+			if ( this.hyperBoard.getBoardState() != '-')
 			{
-				// Sets the char of the cell to the char of the current player ('X' or 'O')
-				this.ticTacToesMatrix[bigPosX][bigPosY].set(posX,posY, this.currentPlayer);
-				
-				// Calls the method to detect if the last move changed the state of the board
-				checkBoard(bigPosX, bigPosY);
-				
-				// The limits will now be where the last player did his move
-				this.boardLimitX = posX;
-				this.boardLimitY = posY;
-				
-				// mainWindow.communicateEvent(this.ticTacToesMatrix, this.hyperBoard);
-				
-				// If the game already ended
-				if ( this.hyperBoard.getBoardState() != '-')
-				{
-					// Call the method to print the ending screen
-				}
+				// Call the method to print the ending screen
+				// main.endGame()
 			}
-		}			
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent arg0)
-	{
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
-	public void mouseExited(MouseEvent arg0)
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mousePressed(MouseEvent arg0)
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent arg0)
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		}
+					
 	}
 }

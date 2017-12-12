@@ -135,4 +135,86 @@ public class MainWindow extends JFrame
 		
 		this.mainBoard.newPlay(allPositions, bigPositions);
 	}
+	
+	
+	/* MOUSE LISTENER LOGIC:
+	 * 
+	 *  @Override
+	public void mouseClicked(MouseEvent event)
+	{
+		// Gets the position of where the mouse was clicked
+		int bigPosX =  event.getX() / 160; 
+		int bigPosY =  event.getY() / 120;
+		
+		// If the player clicked on a valid position
+		if( bigPosX == this.boardLimitX && bigPosY == this.boardLimitY )
+		{
+			// RECEIVES THE SIZE FROM THE MAIN WINDOW SEND ARGUMENT (getX())
+			
+			int xPosition = (event.getX() + 19) / 53;
+			int yPosition = event.getY() / 80; 
+			
+			int posX = xPosition % 3;
+			int posY = yPosition % 3;
+			
+			// If the cell clicked had not been used
+			if ( this.ticTacToesMatrix[bigPosX][bigPosY].get(posX, posY) == '-')
+			{
+				// Sets the char of the cell to the char of the current player ('X' or 'O')
+				this.ticTacToesMatrix[bigPosX][bigPosY].set(posX,posY, this.currentPlayer);
+				
+				// Calls the method to detect if the last move changed the state of the board
+				checkBoard(bigPosX, bigPosY);
+				
+				// The limits will now be where the last player did his move
+				this.boardLimitX = posX;
+				this.boardLimitY = posY;
+				
+				mainWindow.communicateEvent(this.ticTacToesMatrix, this.hyperBoard);
+				
+				// If the game already ended
+				if ( this.hyperBoard.getBoardState() != '-')
+				{
+					// Call the method to print the ending screen
+					// main.endGame()
+				}
+			}
+		}			
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void mouseExited(MouseEvent arg0)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	MOUSE LISTENER LOGIC END*/
 }
