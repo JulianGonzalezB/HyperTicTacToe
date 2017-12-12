@@ -110,10 +110,10 @@ public class Game implements MouseListener, ActionListener
 			int posY = yPosition % 3;
 			
 			// If the cell clicked had not been used
-			if ( this.ticTacToesMatrix[bigPosX][bigPosY].ticTacToe[posX][posY] == '-')
+			if ( this.ticTacToesMatrix[bigPosX][bigPosY].get(posX, posY) == '-')
 			{
 				// Sets the char of the cell to the char of the current player ('X' or 'O')
-				this.ticTacToesMatrix[bigPosX][bigPosY].ticTacToe[posX][posY] = this.currentPlayer;
+				this.ticTacToesMatrix[bigPosX][bigPosY].set(posX,posY, this.currentPlayer);
 				
 				// Calls the method to detect if the last move changed the state of the board
 				checkBoard(bigPosX, bigPosY);

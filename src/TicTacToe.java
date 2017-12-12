@@ -18,7 +18,7 @@ public class TicTacToe
 	 * Matrix that will hold the board itself, it will have 3X3 
 	 * dimensions
 	 */
-	public char[][] ticTacToe;
+	private char[][] ticTacToe;
 	
 	/**
 	 * Variable to keep track if the board is full
@@ -62,6 +62,29 @@ public class TicTacToe
 	public char getBoardState()
 	{
 		return this.boardState;
+	}
+	
+	/**
+	 * Method to get the character of a giving cell of the board
+	 * @param row the row of the cell 
+	 * @param col the column of the cell
+	 * @return the char on the given (row, col)
+	 */
+	public char get(int row, int col)
+	{
+		return this.ticTacToe[row][col];
+	}
+	
+	/**
+	 * Method to set the character of a giving cell of the board
+	 * @param row the row of the cell 
+	 * @param col the column of the cell
+	 * @param playerCharacter it is either 'X' or 'O'
+	 */
+	public void set(int row, int col, char playerCharacter)
+	{
+		// Sets the given cell to the char received
+		this.ticTacToe[row][col] = playerCharacter;
 	}
 	
 	/** 
