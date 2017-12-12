@@ -22,11 +22,12 @@ public class HyperTicTacToe
 	
 	public void run()
 	{
+		// Creates a new Game
+		game = new Game();
+				
 		this.mainWindow= new MainWindow();
 		
 		this.mainWindow.setVisible(true);
-		
-		this.mainWindow.setPlayers(this.playerOne, this.playerTwo);
 		
 		input = new Scanner(System.in);
 		
@@ -34,13 +35,7 @@ public class HyperTicTacToe
 		
 		this.playerTwo= input.next();
 		
-		// Creates a new Game
-		game = new Game();
-		
-		// Calls the method to run the game
-		game.runGame();
-		
-		
+		this.mainWindow.setPlayers(this.playerOne, this.playerTwo);
 	}
 	
 }

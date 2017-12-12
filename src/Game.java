@@ -36,6 +36,12 @@ public class Game implements MouseListener, ActionListener
 	 */
 	private TicTacToe hyperBoard = null;
 	
+	private int boardLimitY= 480;
+	
+	private int boardLimitX= 640;
+	
+	private char currentPlayer = ' ';
+	
 	/**
 	 * Constructor of the class
 	 */
@@ -47,11 +53,11 @@ public class Game implements MouseListener, ActionListener
 		// Creates the array of 9 different TicTacToe boards
 		this.ticTacToesMatrix = new TicTacToe[NUMBER_OF_ROWS][NUMBER_OF_COLUMNS];
 		
+		// Sets the initial player to 'X'
+		this.currentPlayer = 'X';
+		
 		// Calls the method to create the matrix and fill it with new ticTacToes
 		fillTicTacToeMatrix();
-		
-		// Calls the method to follow the interaction of the game
-		runGame();
 	}
 	
 	public void fillTicTacToeMatrix()
@@ -74,67 +80,57 @@ public class Game implements MouseListener, ActionListener
 	}
 	
 	/**
-	 * Method that will control the game, receives the answer of the player
-	 * and determines in which board can the player play his move.
+	 * Method to check the current state of the game, first it
+	 * checks if the ticTacToe where the last player clicked has
+	 * been won or drawn, then it checks if that move made changes
+	 * to the state of the hyperBoard
+	 * @param row the row of the ticTacToe played
+	 * @param col the column of the ticTacToe played
 	 */
-	public void runGame()
+	public void checkBoard(int row, int col)
 	{
-		char currentPlayer = 'X';
-		
-		// While the game has not finished
-		while ( this.hyperBoard.getBoardState() == '-')
-		{
-			// Calls the method to do a move
-			playerMove( currentPlayer);
-			
-			// Switches the players turn
-			currentPlayer = ( currentPlayer == 'X') ? 'O' : 'X'; 
-			
-			// Calls the method to check if the state of the board changed
-			this.hyperBoard.checkState();
-		}
-	}
-	
-	/**
-	 * Method to to all the procedures needed in a turn
-	 * @param currentPlayer 'X' or 'O'
-	 */
-	public void playerMove( char currentPlayer)
-	{
-		checkGameState();
-	}
-
-	public void checkGameState()
-	{
-		for ( int row = 0; row < NUMBER_OF_ROWS; ++row )
-		{
-			for ( int col = 0; col < NUMBER_OF_COLUMNS; ++col )
-			{
-				this.ticTacToesMatrix[row][col].checkState();
-				
-				if ( this.ticTacToesMatrix[row][col].getBoardState() != '-')
-				{
-					printBoardState(this.ticTacToesMatrix[row][col].getBoardState(), 
-							this.ticTacToesMatrix[row][col].getBoardNumber());
-				}
-			}
-		}
-	}
-	
-	public void printBoardState( char state, int boardNumber)
-	{
-		
+		this.ticTacToesMatrix[row][col].checkState();
+		this.hyperBoard.checkState();
 	}
 	
 	@Override
 	public void mouseClicked(MouseEvent event)
 	{
-		// Detect where the player clicked
-		// Fill the corresponding board on the position clicked
+		// Gets the position of where the mouse was clicked
+		int bigPosX =  event.getX() / 160; 
+		int bigPosY =  event.getY() / 120;
 		
-		// Creates a reference to the MainWindow class
-		// MainWindow mainWindow =  new MainWindow();
-		// mainWindow.communicateEvent(this.ticTacToesMatrix, this.hyperBoard);
+		// If the player clicked on a valid position
+		if( bigPosX == this.boardLimitX && bigPosY == this.boardLimitY )
+		{
+			int xPosition = (event.getX() + 19) / 100;
+			int yPosition = event.getY() / 80; 
+			
+			int posX = xPosition % 3;
+			int posY = yPosition % 3;
+			
+			// If the cell clicked had not been used
+			if ( this.ticTacToesMatrix[bigPosX][bigPosY].ticTacToe[posX][posY] == '-')
+			{
+				// Sets the char of the cell to the char of the current player ('X' or 'O')
+				this.ticTacToesMatrix[bigPosX][bigPosY].ticTacToe[posX][posY] = this.currentPlayer;
+				
+				// Calls the method to detect if the last move changed the state of the board
+				checkBoard(bigPosX, bigPosY);
+				
+				// The limits will now be where the last player did his move
+				this.boardLimitX = posX;
+				this.boardLimitY = posY;
+				
+				// mainWindow.communicateEvent(this.ticTacToesMatrix, this.hyperBoard);
+				
+				// If the game already ended
+				if ( this.hyperBoard.getBoardState() != '-')
+				{
+					// Call the method to print the ending screen
+				}
+			}
+		}			
 	}
 
 	@Override

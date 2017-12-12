@@ -18,7 +18,7 @@ public class TicTacToe
 	 * Matrix that will hold the board itself, it will have 3X3 
 	 * dimensions
 	 */
-	private char[][] ticTacToe;
+	public char[][] ticTacToe;
 	
 	/**
 	 * Variable to keep track if the board is full
