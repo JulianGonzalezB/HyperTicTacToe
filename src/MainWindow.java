@@ -1,14 +1,15 @@
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 
 /**
  * A class for the main window of the game. The main window contains the main board and pass information to it from the control class Game.
@@ -17,11 +18,11 @@ import javax.swing.JTextArea;
  */
 public class MainWindow extends JFrame implements MouseListener, ActionListener
 {
-	private String playerOne= null;
+	private String playerOne= "Player 1";
 	
-	private String playerTwo= null;
+	private String playerTwo= "Player 2";
 	
-	private String currentPlayer= "Player 1";
+	private String currentPlayer= this.playerOne;
 	
 	private int currentPlayerNumber= 1;
 	
@@ -37,13 +38,15 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 	
 	private JLabel labelTurns = null;
 	
+	private JFrame finalFrame= null;
+	
+	private JButton playAgain= null;
+	
+	private JButton quit= null;
+	
 	private int screenWidth= 640;
 	
 	private int screenHeight= 480;
-	
-	private int boardLimitY= 0;
-	
-	private int boardLimitX= 0;
 	
 	private boolean firstPlay= true;
 	
@@ -134,8 +137,19 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
+	public void actionPerformed(ActionEvent event) {
+		Object targedButton= event.getSource();
+		
+		if(targedButton == this.quit)
+		{
+			this.finalFrame.dispose();
+			this.dispose();
+			System.exit(0);
+		}
+		else if(targedButton == this.playAgain)
+		{
+			
+		}
 		
 	}
 
@@ -171,7 +185,7 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 		int positionY =  event.getY();
 		
 		// If the player clicked on a valid position
-		if( positionX > this.screenWidth / 8 && positionX < 2 * this.screenWidth / 8 && positionY > this.screenHeight / 8 && positionY < 2 * this.screenHeight / 8)
+		if( positionX > this.screenWidth / 8 && positionX < 7 * this.screenWidth / 8 && positionY > this.screenHeight / 8 && positionY < 7 * this.screenHeight / 8)
 		{
 			//Revisar##############################
 			int bigPosX= (positionX - this.screenWidth / 8) / (2 * this.screenWidth / 8);
@@ -191,9 +205,47 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 				}
 				else
 				{
-					
+					this.finalScreen(this.hyperTicTacToe.gameState());
 				}
 			}
 		}			
+	}
+	
+	/**
+	 * 
+	 */
+	public void finalScreen(char winner)
+	{
+		this.finalFrame= new JFrame("WINNER");
+		
+		this.finalFrame.setSize(320, 240);
+		
+		BorderLayout finalLayout= new BorderLayout();
+		
+		this.finalFrame.setLayout(finalLayout);
+		
+		JPanel finalPanel= new JPanel();
+		
+		finalPanel.setLayout(finalLayout);
+		
+		JLabel playerWinner = new JLabel("CONGRATULATIONS " + this.currentPlayer + "WINS");
+		Font font = new Font("Names", Font.CENTER_BASELINE, 15);
+		playerWinner.setFont(font);
+		
+		JPanel buttonPanel= new JPanel();
+		FlowLayout innerLayout= new FlowLayout();
+		buttonPanel.setLayout(innerLayout);
+		
+		this.playAgain= new JButton("PLAY AGAIN");
+		this.quit= new JButton("QUIT");
+		buttonPanel.add(playAgain);
+		buttonPanel.add(quit);
+		
+		finalPanel.add(playerWinner, BorderLayout.PAGE_START);
+		finalPanel.add(buttonPanel, BorderLayout.CENTER);
+		
+		this.finalFrame.add(finalPanel, BorderLayout.CENTER);
+		
+		this.finalFrame.setVisible(true);
 	}
 }
