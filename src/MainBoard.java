@@ -50,15 +50,6 @@ public class MainBoard extends JPanel
 		g.drawLine(this.scaleWidth, 3 * this.scaleHeight, 7 * this.scaleWidth, 3 * this.scaleHeight);
 		g.drawLine(this.scaleWidth, 5 * this.scaleHeight, 7 * this.scaleWidth, 5 * this.scaleHeight);
 		
-		if(!this.firstPlay)
-		{
-			this.highlightBoard(g);
-		}
-		else
-		{
-			this.firstPlay= false;
-		}
-		
 		//Draw the miniBoards
 		for(int row= 0; row < 3; row++)
 		{
@@ -266,21 +257,28 @@ public class MainBoard extends JPanel
 	 */
 	public void highlightBoard(Graphics g)
 	{
-		for(int row= 0; row < this.allminiBoards.length; row++)
+		if(!this.firstPlay)
 		{
-			for(int col= 0; col < this.allminiBoards[0].length; col++)
+			for(int row= 0; row < this.allminiBoards.length; row++)
 			{
-				//If the miniBoard is valid for the next play
-				
-				int horizontalJump= col * 2 * this.scaleWidth;
-				
-				int verticalJump= row * 2 * this.scaleHeight;
-				
-				g.setColor(Color.LIGHT_GRAY);
-				
-				//Draw the fill of a rectangle in light gray
-				g.fillRect(this.scaleWidth + horizontalJump,verticalJump + this.scaleHeight, this.scaleWidth * 2, this.scaleHeight * 2);
+				for(int col= 0; col < this.allminiBoards[0].length; col++)
+				{
+					//If the miniBoard is valid for the next play
+					
+					int horizontalJump= col * 2 * this.scaleWidth;
+					
+					int verticalJump= row * 2 * this.scaleHeight;
+					
+					g.setColor(Color.LIGHT_GRAY);
+					
+					//Draw the fill of a rectangle in light gray
+					g.fillRect(this.scaleWidth + horizontalJump,verticalJump + this.scaleHeight, this.scaleWidth * 2, this.scaleHeight * 2);
+				}
 			}
+		}
+		else
+		{
+			this.firstPlay= false;
 		}
 	}
 }

@@ -52,14 +52,16 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 		
 		this.hyperTicTacToe= new HyperTicTacToe();
 		
-		this.setSize(this.screenWidth, this.screenHeight);
+		this.setSize(640, 480);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.addMouseListener(this);
 		
 		BorderLayout mainLayout= new BorderLayout();
 		this.setLayout(mainLayout);
 		
 		this.createBoard();
 		this.creategameIndicators();
+		
 	}
 	
 	/**
@@ -97,7 +99,6 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 	{
 		this.indicators= new JPanel();
 		indicators.setLayout(new BorderLayout());
-		Font font = new Font("Names", Font.CENTER_BASELINE, 15);
 		
 		this.players= new JButton("Players");
 		indicators.add(this.players, BorderLayout.LINE_START);
@@ -183,14 +184,14 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 		int positionX =  event.getX(); 
 		int positionY =  event.getY();
 		
+		
 		// If the player clicked on a valid position
-		if( positionX > this.screenWidth / 8 && positionX < 7 * this.screenWidth / 8 && positionY > this.screenHeight / 8 && positionY < 7 * this.screenHeight / 8)
+		if( positionX > this.screenWidth / 8 && positionX < 7 * this.screenWidth / 8 && positionY > 50 + this.screenHeight / 8 && positionY < 50 + 7 * this.screenHeight / 8)
 		{
-			//Revisar##############################
 			int bigPosX= (positionX - this.screenWidth / 8) / (2 * this.screenWidth / 8);
-			int bigPosY= (positionY - this.screenHeight / 8) / (2 * this.screenHeight / 8);;
-			int xPosCell = ((positionX + 19 - this.screenWidth / 8) / (2 * this.screenWidth / 24)) % 3;
-			int yPosCell = ((positionY - this.screenHeight / 8) / (2 * this.screenHeight / 24)) % 3;
+			int bigPosY= (positionY - (80 + this.screenHeight) / 8) / (2 * (80 + this.screenHeight) / 8);;
+			int xPosCell = ((positionX - this.screenWidth / 8) / (2 * this.screenWidth / 24)) % 3;
+			int yPosCell = ((positionY - 50 + this.screenHeight / 8) / (2 * this.screenHeight / 24)) % 3;
 			
 			if(this.hyperTicTacToe.checkPlayerMove(bigPosX, bigPosY, xPosCell, yPosCell))
 			{
