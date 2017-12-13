@@ -159,10 +159,7 @@ public class TicTacToe
 			{
 				// Checks if all the cells are filled by the player
 				if ( this.board[row][col] != player)
-				{
 					wonRow = false;
-					col = board.length; 
-				}
 				
 				// Checks if the game is not full
 				if ( this.board[row][col] == '-')
@@ -212,6 +209,7 @@ public class TicTacToe
 				}
 			}
 					
+			// If all the cells of the column were the same as the player
 			if ( wonCol)
 				return true;
 		}
@@ -240,6 +238,7 @@ public class TicTacToe
 			}
 		}
 		
+		// If the prisoner won by using the first diagonal
 		if ( wonDiag)
 			return true;
 		
