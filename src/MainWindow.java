@@ -27,7 +27,7 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 	
 	private int turns= 1;
 	
-	private HyperTicTacToeGame game= null;
+	private HyperTicTacToe hyperTicTacToe= null;
 	
 	private MainBoard mainBoard= null;
 	
@@ -54,7 +54,7 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 	{
 		super("Hyper Tic-Tac-Toe");
 		
-		this.game= new HyperTicTacToeGame();
+		this.hyperTicTacToe= new HyperTicTacToe();
 		
 		this.setSize(this.screenWidth, this.screenHeight);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -179,12 +179,20 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 			int xPosCell = ((positionX + 19 - this.screenWidth / 8) / (2 * this.screenWidth / 24)) % 3;
 			int yPosCell = ((positionY - this.screenHeight / 8) / (2 * this.screenHeight / 24)) % 3;
 			
-			this.game.checkPlayerMove(bigPosX, bigPosY, xPosCell, yPosCell);
-			
-			if(true)
+			if(this.hyperTicTacToe.checkPlayerMove(bigPosX, bigPosY, xPosCell, yPosCell))
 			{
-				//pide las dos matrices
-				//this.mainBoard.newPlay(allPositions, bigPositions, xHighlight, yHighlight);
+				if(this.hyperTicTacToe.gameState() == '-')
+				{
+					TicTacToe bigPositions= this.hyperTicTacToe.getHyperBoard();
+					
+					TicTacToe[][] allPositions= this.hyperTicTacToe.getTicTacToeMatrix();
+					
+					this.mainBoard.newPlay(allPositions, bigPositions);
+				}
+				else
+				{
+					
+				}
 			}
 		}			
 	}

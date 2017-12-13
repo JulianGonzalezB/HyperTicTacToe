@@ -16,7 +16,7 @@ public class MainBoard extends JPanel
 	
 	private int scaleWidth= 0;
 	
-	private char[][] bigPositions= null;
+	private TicTacToe bigPositions= null;
 	
 	private TicTacToe[][] allminiBoards= null;
 	
@@ -196,7 +196,7 @@ public class MainBoard extends JPanel
 	 * @param allPositions
 	 * @param bigPositions
 	 */
-	public void newPlay( TicTacToe[][] allminiBoards, char[][] bigPositions, int xHighlight, int yHighlight)
+	public void newPlay( TicTacToe[][] allminiBoards, TicTacToe bigPositions)
 	{
 		this.allminiBoards= allminiBoards;
 		
@@ -215,13 +215,13 @@ public class MainBoard extends JPanel
 		{
 			for(int col= 0; col < 3; col++)
 			{
-				if(this.bigPositions[row][col] == '-')
+				if(this.bigPositions.get(row, col) == '-')
 				{
 					this.checkMiniBoards(row, col, g);
 				}
 				else
 				{
-					this.drawBigsymbol(g, row, col, this.bigPositions[row][col]);
+					this.drawBigsymbol(g, row, col, this.bigPositions.get(row, col));
 				}
 			}
 		}
