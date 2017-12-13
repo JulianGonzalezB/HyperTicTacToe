@@ -20,9 +20,7 @@ public class MainBoard extends JPanel
 	
 	private TicTacToe[][] allminiBoards= null;
 	
-	private boolean highlight= true;
-	
-	private String currentsymbol= "X";
+	private boolean firstPlay= true;
 	
 	/**
 	 * The constructor of the class. it sets a scale for the width and the height to work with.
@@ -52,7 +50,14 @@ public class MainBoard extends JPanel
 		g.drawLine(this.scaleWidth, 3 * this.scaleHeight, 7 * this.scaleWidth, 3 * this.scaleHeight);
 		g.drawLine(this.scaleWidth, 5 * this.scaleHeight, 7 * this.scaleWidth, 5 * this.scaleHeight);
 		
-		this.highlightBoard(g);
+		if(!this.firstPlay)
+		{
+			this.highlightBoard(g);
+		}
+		else
+		{
+			this.firstPlay= false;
+		}
 		
 		//Draw the miniBoards
 		for(int row= 0; row < 3; row++)
@@ -265,7 +270,7 @@ public class MainBoard extends JPanel
 		{
 			for(int col= 0; col < this.allminiBoards[0].length; col++)
 			{
-				//If the miniBoard is valid for the next play##############################################
+				//If the miniBoard is valid for the next play
 				
 				int horizontalJump= col * 2 * this.scaleWidth;
 				

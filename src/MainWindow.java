@@ -9,6 +9,7 @@ import java.awt.event.MouseListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -26,23 +27,15 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 	
 	private int currentPlayerNumber= 1;
 	
-	private int turns= 1;
-	
 	private HyperTicTacToe hyperTicTacToe= null;
 	
 	private MainBoard mainBoard= null;
 	
 	private JPanel indicators= null;
 	
-	private JLabel labelPlayer = null;
+	private JButton restart = null;
 	
-	private JLabel labelTurns = null;
-	
-	private JFrame finalFrame= null;
-	
-	private JButton playAgain= null;
-	
-	private JButton quit= null;
+	private JButton players= null;
 	
 	private int screenWidth= 640;
 	
@@ -86,9 +79,14 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 	 */
 	public void setPlayers(String playerOne, String playerTwo)
 	{
-		this.playerOne= playerOne;
-		this.playerTwo= playerTwo;
-		this.currentPlayer= this.playerOne;
+		if(playerOne != null)
+		{
+			this.playerOne= playerOne;
+		}
+		if(playerTwo != null)
+		{
+			this.playerTwo= playerTwo;
+		}
 	}
 	
 	/**
@@ -101,13 +99,11 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 		indicators.setLayout(new BorderLayout());
 		Font font = new Font("Names", Font.CENTER_BASELINE, 15);
 		
-		this.labelPlayer = new JLabel("Player : " + this.currentPlayer);
-		labelPlayer.setFont(font);
-		indicators.add(labelPlayer, BorderLayout.LINE_START);
+		this.players= new JButton("Players");
+		indicators.add(this.players, BorderLayout.LINE_START);
 		
-		this.labelTurns = new JLabel("turns : " + this.turns);
-		labelTurns.setFont(font);
-		indicators.add(labelTurns, BorderLayout.LINE_END);
+		this.restart = new JButton("RESTART");
+		indicators.add(restart, BorderLayout.LINE_END);
 		
 		this.add(indicators, BorderLayout.PAGE_START);
 	}
@@ -131,26 +127,29 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 			this.currentPlayerNumber= 1;
 		}
 		
-		this.labelPlayer.setText("Player : " + this.currentPlayer);
-		this.labelTurns.setText("turns : " + this.turns);
-		this.turns++;
+		this.players.setText("Player : " + this.currentPlayer);
+		
+		if(!this.firstPlay)
+		{
+			this.players.setEnabled(false);
+		}
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent event) {
-		Object targedButton= event.getSource();
-		
-		if(targedButton == this.quit)
+	public void actionPerformed(ActionEvent event) 
+	{
+		if(event.getSource() == this.restart)
 		{
-			this.finalFrame.dispose();
-			this.dispose();
-			System.exit(0);
+			this.reset();
 		}
-		else if(targedButton == this.playAgain)
+		else if(event.getSource() == this.players)
 		{
+			String firstPlayer= JOptionPane.showInputDialog("Player 1");
 			
+			String secondPlayer= JOptionPane.showInputDialog("Player 2");
+			
+			this.setPlayers(firstPlayer, secondPlayer);
 		}
-		
 	}
 
 	@Override
@@ -216,36 +215,59 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 	 */
 	public void finalScreen(char winner)
 	{
-		this.finalFrame= new JFrame("WINNER");
+		String playerWinner= "";
 		
-		this.finalFrame.setSize(320, 240);
+		if(winner == 'O')
+		{
+			playerWinner= this.playerOne;
+		}
+		else if(winner == 'X')
+		{
+			playerWinner= this.playerTwo;
+		}
 		
-		BorderLayout finalLayout= new BorderLayout();
+		int answer= JOptionPane.showConfirmDialog(null, "CONGRATULATIONS" + playerWinner + "." + "Do you want to play again?");
 		
-		this.finalFrame.setLayout(finalLayout);
+		if(answer == JOptionPane.OK_OPTION)
+		{
+			this.reset();
+		}
+		else if(answer == JOptionPane.NO_OPTION)
+		{
+			System.exit(0);
+		}
+	}
+	
+	/**
+	 * 
+	 */
+	private void reset()
+	{
+		this.playerOne= "Player 1";
 		
-		JPanel finalPanel= new JPanel();
+		this.playerTwo= "Player 2";
 		
-		finalPanel.setLayout(finalLayout);
+		this.currentPlayer= this.playerOne;
 		
-		JLabel playerWinner = new JLabel("CONGRATULATIONS " + this.currentPlayer + "WINS");
-		Font font = new Font("Names", Font.CENTER_BASELINE, 15);
-		playerWinner.setFont(font);
+		this.currentPlayerNumber= 1;
 		
-		JPanel buttonPanel= new JPanel();
-		FlowLayout innerLayout= new FlowLayout();
-		buttonPanel.setLayout(innerLayout);
+		this.hyperTicTacToe= new HyperTicTacToe();
 		
-		this.playAgain= new JButton("PLAY AGAIN");
-		this.quit= new JButton("QUIT");
-		buttonPanel.add(playAgain);
-		buttonPanel.add(quit);
+		this.mainBoard= null;
 		
-		finalPanel.add(playerWinner, BorderLayout.PAGE_START);
-		finalPanel.add(buttonPanel, BorderLayout.CENTER);
+		this.indicators= null;
 		
-		this.finalFrame.add(finalPanel, BorderLayout.CENTER);
+		this.restart = null;
 		
-		this.finalFrame.setVisible(true);
+		this.players= null;
+		
+		this.screenWidth= 640;
+		
+		this.screenHeight= 480;
+		
+		this.firstPlay= true;
+		
+		this.createBoard();
+		this.creategameIndicators();
 	}
 }
