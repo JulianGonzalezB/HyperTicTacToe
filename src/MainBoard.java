@@ -16,13 +16,9 @@ public class MainBoard extends JPanel
 	
 	private int scaleWidth= 0;
 	
-	private char[][] allPositions= null;
-	
 	private char[][] bigPositions= null;
 	
-	private int nextRow= 0;
-	
-	private int nextCol= 0;
+	private TicTacToe[][] allminiBoards= null;
 	
 	private boolean highlight= true;
 	
@@ -56,12 +52,7 @@ public class MainBoard extends JPanel
 		g.drawLine(this.scaleWidth, 3 * this.scaleHeight, 7 * this.scaleWidth, 3 * this.scaleHeight);
 		g.drawLine(this.scaleWidth, 5 * this.scaleHeight, 7 * this.scaleWidth, 5 * this.scaleHeight);
 		
-		//highlight the corresponding miniBoard
-		if( this.highlight)
-		{
-			//Highlight the next board to be played in.
-			this.highlightBoard( this.nextCol, this.nextRow, g);
-		}
+		this.highlightBoard(g);
 		
 		//Draw the miniBoards
 		for(int row= 0; row < 3; row++)
@@ -72,7 +63,10 @@ public class MainBoard extends JPanel
 			}
 		}
 		
-		this.checkBigBoard(g);
+		if(this.bigPositions != null)
+		{
+			this.checkBigBoard(g);
+		}
 	}
 	
 	/**
@@ -111,7 +105,7 @@ public class MainBoard extends JPanel
 	 * @param x
 	 * @param y
 	 */
-	public void drawsymbol(String symbol, int x, int y, Graphics g)
+	public void drawsymbol(char symbol, int x, int y, Graphics g)
 	{
 		this.drawXorO(symbol, x, y, this.scaleWidth, this.scaleHeight, g);
 	}
@@ -123,7 +117,7 @@ public class MainBoard extends JPanel
 	 * @param col
 	 * @param g
 	 */
-	public void drawBigsymbol(Graphics g, int row, int col, String symbol)
+	public void drawBigsymbol(Graphics g, int row, int col, char symbol)
 	{
 		this.createMiniBoards(g, row, col, "black");
 		
@@ -137,7 +131,7 @@ public class MainBoard extends JPanel
 	 * @param col
 	 * @param g
 	 */
-	public void drawXorO(String symbol, int row, int col, Graphics g)
+	public void drawXorO(char symbol, int row, int col, Graphics g)
 	{
 		g.setColor(Color.RED);
 		
@@ -145,15 +139,19 @@ public class MainBoard extends JPanel
 		
 		int verticalJump= row * 2 * this.scaleHeight;
 		
-		if(symbol.equals("X"))
+		if(symbol == 'X')
 		{
 			g.drawLine(this.scaleWidth + horizontalJump, verticalJump + this.scaleHeight, 3 * this.scaleWidth + horizontalJump, verticalJump + 3 * this.scaleHeight);
 			
 			g.drawLine(3 * this.scaleWidth + horizontalJump, verticalJump + this.scaleHeight, this.scaleWidth + horizontalJump, verticalJump + 3 * this.scaleHeight);
 		}
-		else
+		else if(symbol == 'O')
 		{
 			g.drawOval(4 * this.scaleWidth / 3 + horizontalJump, 5 + verticalJump + this.scaleHeight, 4 * this.scaleWidth / 3, 4 * this.scaleWidth / 3);
+		}
+		else
+		{
+			this.createMiniBoards(g, row, col, "black");
 		}
 	}
 	
@@ -166,7 +164,7 @@ public class MainBoard extends JPanel
 	 * @param hieght is the height for each cell
 	 * @param g is an instance of the class Graphics
 	 */
-	public void drawXorO(String symbol, int row, int col, int width, int height, Graphics g)
+	public void drawXorO(char symbol, int row, int col, int width, int height, Graphics g)
 	{
 		g.setColor(Color.RED);
 		
@@ -178,7 +176,7 @@ public class MainBoard extends JPanel
 		
 		int y1= this.scaleHeight + verticalJump;
 		
-		if(symbol.equals("X"))
+		if(symbol == 'X')
 		{
 			
 			// print the X
@@ -186,7 +184,7 @@ public class MainBoard extends JPanel
 			
 			g.drawLine(x1, y1 + 2 * this.scaleHeight / 3, x1 + 2 * this.scaleWidth / 3, y1);
 		}
-		else
+		else if(symbol == 'O')
 		{
 			// print the O
 			g.drawOval(x1, y1, 2 * this.scaleWidth / 3, 2 * this.scaleHeight / 3);
@@ -198,9 +196,9 @@ public class MainBoard extends JPanel
 	 * @param allPositions
 	 * @param bigPositions
 	 */
-	public void newPlay( char[][] allPositions, char[][] bigPositions)
+	public void newPlay( TicTacToe[][] allminiBoards, char[][] bigPositions, int xHighlight, int yHighlight)
 	{
-		this.allPositions= allPositions;
+		this.allminiBoards= allminiBoards;
 		
 		this.bigPositions= bigPositions;
 		
@@ -221,9 +219,9 @@ public class MainBoard extends JPanel
 				{
 					this.checkMiniBoards(row, col, g);
 				}
-				else if( this.bigPositions[row][col] != ' ')
+				else
 				{
-					this.drawBigsymbol(g, row, col, "" + this.bigPositions[row][col]);
+					this.drawBigsymbol(g, row, col, this.bigPositions[row][col]);
 				}
 			}
 		}
@@ -235,23 +233,21 @@ public class MainBoard extends JPanel
 	 * @param col
 	 * @param g is an instance of the class Graphics
 	 */
-	public void checkMiniBoards(int row, int col, Graphics g)
+	public void checkMiniBoards(int bigRow, int bigCol, Graphics g)
 	{
-		int rowFactor= row * 3;
-		
-		int colFactor= col * 3;
-		
-		int rowLimit= 3 + rowFactor;
-		
-		int colLimit= 3 + colFactor;
-		
-		for(int currentRow= rowFactor; currentRow < rowLimit ; currentRow++)
+		for(int row= 0; row < 3; row++)
 		{
-			for(int currentCol= colFactor; currentCol < colLimit; currentCol++)
+			for(int col= 0; col < 3; col++)
 			{
-				if(this.allPositions[row][col] == 'X' || this.allPositions[row][col] == 'O')
+				char symbol= this.allminiBoards[bigRow][bigCol].get(row, col);
+				
+				if( symbol == 'X' || symbol == 'O')
 				{
-					this.drawsymbol( "" + this.allPositions[row][col], row, col, g);
+					int newRow= bigRow * 3 + row;
+					int newCol= bigCol * 3 + col;
+					
+					this.drawsymbol(symbol, newCol, newRow, g);
+					
 				}
 			}
 		}
@@ -263,16 +259,23 @@ public class MainBoard extends JPanel
 	 * @param row is the row if the mini-board
 	 * @param g is an instance of the class Graphics
 	 */
-	public void highlightBoard(int col, int row, Graphics g)
+	public void highlightBoard(Graphics g)
 	{
-		int horizontalJump= col * 2 * this.scaleWidth;
-		
-		int verticalJump= row * 2 * this.scaleHeight;
-		
-		g.setColor(Color.LIGHT_GRAY);
-		
-		//Draw the fill of a rectangle in light gray
-		g.fillRect(this.scaleWidth + horizontalJump,verticalJump + this.scaleHeight, this.scaleWidth * 2, this.scaleHeight * 2);
-		
+		for(int row= 0; row < this.allminiBoards.length; row++)
+		{
+			for(int col= 0; col < this.allminiBoards[0].length; col++)
+			{
+				//If the miniBoard is valid for the next play##############################################
+				
+				int horizontalJump= col * 2 * this.scaleWidth;
+				
+				int verticalJump= row * 2 * this.scaleHeight;
+				
+				g.setColor(Color.LIGHT_GRAY);
+				
+				//Draw the fill of a rectangle in light gray
+				g.fillRect(this.scaleWidth + horizontalJump,verticalJump + this.scaleHeight, this.scaleWidth * 2, this.scaleHeight * 2);
+			}
+		}
 	}
 }

@@ -15,7 +15,7 @@ import javax.swing.JTextArea;
  * This class contains too the name of the players and the number of turns.
  *
  */
-public class MainWindow extends JFrame
+public class MainWindow extends JFrame implements MouseListener, ActionListener
 {
 	private String playerOne= null;
 	
@@ -27,6 +27,8 @@ public class MainWindow extends JFrame
 	
 	private int turns= 1;
 	
+	private HyperTicTacToeGame game= null;
+	
 	private MainBoard mainBoard= null;
 	
 	private JPanel indicators= null;
@@ -35,9 +37,15 @@ public class MainWindow extends JFrame
 	
 	private JLabel labelTurns = null;
 	
-	private int boardLimitY= 480;
+	private int screenWidth= 640;
 	
-	private int boardLimitX= 640;
+	private int screenHeight= 480;
+	
+	private int boardLimitY= 0;
+	
+	private int boardLimitX= 0;
+	
+	private boolean firstPlay= true;
 	
 	/**
 	 * Constructor of the class
@@ -45,7 +53,10 @@ public class MainWindow extends JFrame
 	public MainWindow()
 	{
 		super("Hyper Tic-Tac-Toe");
-		this.setSize(640, 480);
+		
+		this.game= new HyperTicTacToeGame();
+		
+		this.setSize(this.screenWidth, this.screenHeight);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		BorderLayout mainLayout= new BorderLayout();
@@ -121,100 +132,60 @@ public class MainWindow extends JFrame
 		this.labelTurns.setText("turns : " + this.turns);
 		this.turns++;
 	}
-	
-	/**
-	 * This method communicates the state of the game to the main board. This method pass two arrays with all the information
-	 * the main board needs for repaint.
-	 * @param allPositions is the array that contains the state of all cells of all 9 mini-boards while they are in play.
-	 * @param bigPositions is the array that contains the general state (if is in play or not and what player won each miniboard) 
-	 * of each of the 9 mini-boards.
-	 */
-	public void communicateEvent(char[][] allPositions, char[][] bigPositions)
-	{
-		this.setCurrentPlayer();
-		
-		this.mainBoard.newPlay(allPositions, bigPositions);
-	}
-	
-	
-	/* MOUSE LISTENER LOGIC:
-	 * 
-	 *  @Override
-	public void mouseClicked(MouseEvent event)
-	{
-		// Gets the position of where the mouse was clicked
-		int bigPosX =  event.getX() / 160; 
-		int bigPosY =  event.getY() / 120;
-		
-		// If the player clicked on a valid position
-		if( bigPosX == this.boardLimitX && bigPosY == this.boardLimitY )
-		{
-			// RECEIVES THE SIZE FROM THE MAIN WINDOW SEND ARGUMENT (getX())
-			
-			int xPosition = (event.getX() + 19) / 53;
-			int yPosition = event.getY() / 80; 
-			
-			int posX = xPosition % 3;
-			int posY = yPosition % 3;
-			
-			// If the cell clicked had not been used
-			if ( this.ticTacToesMatrix[bigPosX][bigPosY].get(posX, posY) == '-')
-			{
-				// Sets the char of the cell to the char of the current player ('X' or 'O')
-				this.ticTacToesMatrix[bigPosX][bigPosY].set(posX,posY, this.currentPlayer);
-				
-				// Calls the method to detect if the last move changed the state of the board
-				checkBoard(bigPosX, bigPosY);
-				
-				// The limits will now be where the last player did his move
-				this.boardLimitX = posX;
-				this.boardLimitY = posY;
-				
-				mainWindow.communicateEvent(this.ticTacToesMatrix, this.hyperBoard);
-				
-				// If the game already ended
-				if ( this.hyperBoard.getBoardState() != '-')
-				{
-					// Call the method to print the ending screen
-					// main.endGame()
-				}
-			}
-		}			
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent arg0)
-	{
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
-	public void mouseExited(MouseEvent arg0)
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mousePressed(MouseEvent arg0)
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent arg0)
-	{
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
 	
-	MOUSE LISTENER LOGIC END*/
+	@Override
+	public void mouseClicked(MouseEvent event)
+	{
+		// Gets the position of where the mouse was clicked
+		int positionX =  event.getX(); 
+		int positionY =  event.getY();
+		
+		// If the player clicked on a valid position
+		if( positionX > this.screenWidth / 8 && positionX < 2 * this.screenWidth / 8 && positionY > this.screenHeight / 8 && positionY < 2 * this.screenHeight / 8)
+		{
+			//Revisar##############################
+			int bigPosX= (positionX - this.screenWidth / 8) / (2 * this.screenWidth / 8);
+			int bigPosY= (positionY - this.screenHeight / 8) / (2 * this.screenHeight / 8);;
+			int xPosCell = ((positionX + 19 - this.screenWidth / 8) / (2 * this.screenWidth / 24)) % 3;
+			int yPosCell = ((positionY - this.screenHeight / 8) / (2 * this.screenHeight / 24)) % 3;
+			
+			this.game.checkPlayerMove(bigPosX, bigPosY, xPosCell, yPosCell);
+			
+			if(true)
+			{
+				//pide las dos matrices
+				//this.mainBoard.newPlay(allPositions, bigPositions, xHighlight, yHighlight);
+			}
+		}			
+	}
 }
