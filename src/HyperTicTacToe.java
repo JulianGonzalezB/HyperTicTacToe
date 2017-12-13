@@ -61,8 +61,10 @@ public class HyperTicTacToe
 		{
 			for ( int col = 0; col < NUMBER_OF_COLUMNS; ++col )
 			{
+				// Creates a new TicTacToe
 				this.ticTacToesMatrix[row][col] = new TicTacToe();
 				
+				// Sets the number of the board
 				this.ticTacToesMatrix[row][col].setBoardNumber(numberOfBoard);
 				
 				numberOfBoard++;	
@@ -84,7 +86,14 @@ public class HyperTicTacToe
 		this.hyperBoard.checkState();
 	}
 	
-	// Primer llama a este, le devuelve true si la juegada que hizo fue valida
+	/**
+	 * 
+	 * @param bigPosX
+	 * @param bigPosY
+	 * @param posX
+	 * @param posY
+	 * @return
+	 */
 	public boolean checkPlayerMove(int bigPosX, int bigPosY, int posX, int posY)
 	{
 		// If the cell clicked had not been used
@@ -102,21 +111,34 @@ public class HyperTicTacToe
 		return false;
 	}
 	
-	// Luego llama a este para saber si el juego continua (devuelve '-', 'X', 'O' o '=')
+	/**
+	 * Method that returns the current state of the game (if it has been won by someone 
+	 * or if it still is in play)
+	 * @return the current state of the hyperBoard
+	 */
 	public char gameState() 
 	{
+		// Returns the state of the game (X, O, = or -)
 		return this.hyperBoard.getBoardState();
 	}
 	
-	// Este lo llama de tercero, le devuelve el "gato grande"
+	/**
+	 * Method that returns a reference of the hyperBoard property
+	 * @return this.hyperBoard
+	 */
 	public TicTacToe getHyperBoard()
 	{
+		// Returns the hyperBoard property
 		return this.hyperBoard;
 	}
 	
-	// Este lo llama de ultimo, le devuelve la matriz de gatos
+	/**
+	 * Method that returns a reference of the ticTacToeMatrix property
+	 * @return this.hyperBoard
+	 */
 	public TicTacToe[][] getTicTacToeMatrix()
 	{
+		// Returns the ticTacToesMatrix property
 		return this.ticTacToesMatrix;
 	}
 }
