@@ -87,12 +87,13 @@ public class HyperTicTacToe
 	}
 	
 	/**
-	 * 
-	 * @param bigPosX
-	 * @param bigPosY
-	 * @param posX
-	 * @param posY
-	 * @return
+	 * Method that determines if the last move made by the player was valid.
+	 * If so, it returns true
+	 * @param bigPosX the row of the hyperBoard (big TicTacToe)
+	 * @param bigPosY the column of a board (big TicTacToe)
+	 * @param posX the row of the board (small TicTacToe)
+	 * @param posY the column of the board (small TicTacToe)
+	 * @return true if the player made a valid move
 	 */
 	public boolean checkPlayerMove(int bigPosX, int bigPosY, int posX, int posY)
 	{
@@ -102,12 +103,17 @@ public class HyperTicTacToe
 			// Sets the char of the cell to the char of the current player ('X' or 'O')
 			this.ticTacToesMatrix[bigPosX][bigPosY].set(posX,posY, this.currentPlayer);
 			
+			// Changes the current player
+			this.currentPlayer = (this.currentPlayer == 'X') ? 'O' : 'X';
+					
 			// Calls the method to detect if the last move changed the state of the board
 			checkBoard(bigPosX, bigPosY);
 			
+			// Returns true if the move was valid
 			return true;
 		}	
 		
+		// Returns false if the move was not made in a valid place
 		return false;
 	}
 	
