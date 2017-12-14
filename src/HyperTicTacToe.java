@@ -90,7 +90,26 @@ public class HyperTicTacToe
 	public void checkBoard(int row, int col)
 	{
 		this.ticTacToesMatrix[row][col].checkState();
+		
+		setHyperBoardCells();
 		this.hyperBoard.checkState();
+	}
+	
+	/**
+	 * Method that sets the cells of the hyperBoard to the boardState
+	 * of the ticTacToesMatrix
+	 */
+	public void setHyperBoardCells()
+	{
+		// Cycle to fill the matrix with new ticTacToes in each cell
+		for ( int row = 0; row < NUMBER_OF_ROWS; ++row )
+		{
+			for ( int col = 0; col < NUMBER_OF_COLUMNS; ++col )
+			{
+				// Creates a new TicTacToe
+				this.hyperBoard.set(row, col, this.ticTacToesMatrix[row][col].getBoardState());
+			}
+		}		
 	}
 	
 	/**
