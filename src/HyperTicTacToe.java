@@ -173,10 +173,15 @@ public class HyperTicTacToe
 			for (int col = 0; col < 3; ++col)
 			{
 				// If the matrix is still in play
-				if ( this.hyperBoard.get(row, col) == '-')
+				if ( this.hyperBoard.get(row, col) == '-' && unlock)
+				{
+					// Sets the lock element to true
+					this.ticTacToesMatrix[row][col].unlock(true);
+				}
+				else
 				{
 					// Sets the lock element to the according boolean
-					this.ticTacToesMatrix[row][col].unlock(unlock);
+					this.ticTacToesMatrix[row][col].unlock(false);
 				}
 			}
 		}
