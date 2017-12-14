@@ -120,7 +120,7 @@ public class MainBoard extends JPanel
 	 */
 	public void drawBigsymbol(Graphics g, int row, int col, char symbol)
 	{
-		this.createMiniBoards(g, row, col, "black");
+		this.createMiniBoards(g, col, row, "black");
 		
 		this.drawXorO(symbol, row, col, g);
 	}
@@ -136,9 +136,9 @@ public class MainBoard extends JPanel
 	{
 		g.setColor(Color.RED);
 		
-		int horizontalJump= col * 2 * this.scaleWidth;
+		int horizontalJump= row * 2 * this.scaleWidth;
 		
-		int verticalJump= row * 2 * this.scaleHeight;
+		int verticalJump= col * 2 * this.scaleHeight;
 		
 		if(symbol == 'X')
 		{
@@ -152,7 +152,7 @@ public class MainBoard extends JPanel
 		}
 		else
 		{
-			this.createMiniBoards(g, row, col, "black");
+			this.createMiniBoards(g, col, row, "black");
 		}
 	}
 	

@@ -25,7 +25,7 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 	
 	private String currentPlayer= this.playerOne;
 	
-	private int currentPlayerNumber= 1;
+	private int currentPlayerNumber= 2;
 	
 	private HyperTicTacToe hyperTicTacToe= null;
 	
@@ -128,6 +128,7 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 	 */
 	public void setCurrentPlayer()
 	{
+		//Cheack the player in the current turn and sets and switch players
 		if(this.currentPlayerNumber == 1)
 		{
 			this.currentPlayer= this.playerOne;
@@ -141,6 +142,7 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 			this.currentPlayerNumber= 1;
 		}
 		
+		//Change the label for showing the name of the next current player
 		this.playerInTurn.setText("Player : " + this.currentPlayer);
 		
 		if(!this.firstPlay)
@@ -152,6 +154,7 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 	@Override
 	public void actionPerformed(ActionEvent event) 
 	{
+		//Detects which button was pushed
 		if(event.getSource() == this.restart)
 		{
 			this.reset();
@@ -218,6 +221,12 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 				}
 				else
 				{
+					TicTacToe bigPositions= this.hyperTicTacToe.getHyperBoard();
+					
+					TicTacToe[][] allPositions= this.hyperTicTacToe.getTicTacToeMatrix();
+					
+					this.mainBoard.newPlay(allPositions, bigPositions);
+					
 					this.finalScreen(this.hyperTicTacToe.gameState());
 				}
 				
@@ -227,7 +236,9 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 	}
 	
 	/**
-	 * 
+	 * This method displays a dialog with a text that congratulates the winner and show 
+	 * ask if players want to play again.
+	 * This method is called when a player wins the game
 	 */
 	public void finalScreen(char winner)
 	{
@@ -242,7 +253,7 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 			playerWinner= this.playerTwo;
 		}
 		
-		int answer= JOptionPane.showConfirmDialog(null, "CONGRATULATIONS" + playerWinner + "." + "Do you want to play again?");
+		int answer= JOptionPane.showConfirmDialog(null, "Congratulations  " + playerWinner + " .  " + "Do you want to play again?");
 		
 		if(answer == JOptionPane.OK_OPTION)
 		{
@@ -255,10 +266,12 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 	}
 	
 	/**
-	 * 
+	 *This method resets the game.
+	 *This method is called when the games has ended and player want to play again or the button "restart" is pushed. 
 	 */
 	private void reset()
 	{
+		//Resets all attributes of the class
 		this.playerOne= "Player 1";
 		
 		this.playerTwo= "Player 2";
