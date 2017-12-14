@@ -40,17 +40,13 @@ public class MainBoard extends JPanel
 	{
 		super.paintComponent(g);
 		this.setBackground(Color.BLACK);
-		g.setColor(Color.WHITE);
 		
 		if(!this.firstPlay)
 		{
 			this.highlightBoard(g);
 		}
-		else
-		{
-			this.firstPlay= true;
-		}
 		
+		g.setColor(Color.WHITE);
 		//vertical lines
 		g.drawLine(3 * this.scaleWidth, this.scaleHeight, 3 * this.scaleWidth, 7 * this.scaleHeight);
 		g.drawLine(5 * this.scaleWidth, this.scaleHeight, 5 * this.scaleWidth, 7 * this.scaleHeight);
@@ -207,6 +203,8 @@ public class MainBoard extends JPanel
 		
 		this.bigPositions= bigPositions;
 		
+		this.firstPlay= false;
+		
 		this.repaint();
 	}
 	
@@ -220,6 +218,7 @@ public class MainBoard extends JPanel
 		{
 			for(int col= 0; col < 3; col++)
 			{
+				System.err.print(this.bigPositions.get(row, col));
 				if(this.bigPositions.get(row, col) == '-')
 				{
 					this.checkMiniBoards(row, col, g);
@@ -229,6 +228,7 @@ public class MainBoard extends JPanel
 					this.drawBigsymbol(g, row, col, this.bigPositions.get(row, col));
 				}
 			}
+			System.err.println();
 		}
 	}
 	
@@ -275,11 +275,11 @@ public class MainBoard extends JPanel
 					//If the miniBoard is valid for the next play
 					if(this.allminiBoards[row][col].isUnlocked())
 					{
-						int horizontalJump= col * 2 * this.scaleWidth;
+						int horizontalJump= row * 2 * this.scaleWidth;
 						
-						int verticalJump= row * 2 * this.scaleHeight;
+						int verticalJump= col * 2 * this.scaleHeight;
 						
-						g.setColor(Color.LIGHT_GRAY);
+						g.setColor(Color.darkGray);
 						
 						//Draw the fill of a rectangle in light gray
 						g.fillRect(this.scaleWidth + horizontalJump,verticalJump + this.scaleHeight, this.scaleWidth * 2, this.scaleHeight * 2);
@@ -291,5 +291,14 @@ public class MainBoard extends JPanel
 		{
 			this.firstPlay= false;
 		}
+	}
+	
+	/**
+	 * 
+	 */
+	public void restart()
+	{
+		
+		repaint();
 	}
 }

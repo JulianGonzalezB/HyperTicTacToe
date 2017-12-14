@@ -37,6 +37,8 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 	
 	private JButton players= null;
 	
+	private JLabel playerInTurn= null;
+	
 	private int screenWidth= 640;
 	
 	private int screenHeight= 480;
@@ -89,6 +91,8 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 		{
 			this.playerTwo= playerTwo;
 		}
+		
+		this.setCurrentPlayer();
 	}
 	
 	/**
@@ -102,7 +106,14 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 		
 		this.players= new JButton("Players");
 		this.players.addActionListener(this);
-		indicators.add(this.players, BorderLayout.LINE_START);
+		
+		this.playerInTurn= new JLabel();
+		
+		JPanel name= new JPanel();
+		name.setLayout(new FlowLayout());
+		name.add(players);
+		name.add(playerInTurn);
+		indicators.add(name, BorderLayout.LINE_START);
 		
 		this.restart = new JButton("RESTART");
 		this.restart.addActionListener(this);
@@ -130,7 +141,7 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 			this.currentPlayerNumber= 1;
 		}
 		
-		this.players.setText("Player : " + this.currentPlayer);
+		this.playerInTurn.setText("Player : " + this.currentPlayer);
 		
 		if(!this.firstPlay)
 		{
@@ -195,8 +206,6 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 			int xPosCell = ((positionX - this.screenWidth / 8) / (2 * this.screenWidth / 24)) % 3;
 			int yPosCell = ((positionY - 105) / (2 * this.screenHeight / 24)) % 3;
 			
-			System.err.printf("%d, %d%n",positionY, yPosCell);
-			
 			if(this.hyperTicTacToe.checkPlayerMove(bigPosX, bigPosY, xPosCell, yPosCell))
 			{
 				if(this.hyperTicTacToe.gameState() == '-')
@@ -211,6 +220,8 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 				{
 					this.finalScreen(this.hyperTicTacToe.gameState());
 				}
+				
+				this.setCurrentPlayer();
 			}
 		}			
 	}
@@ -264,6 +275,8 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 		
 		this.restart = null;
 		
+		this.playerInTurn= null;
+		
 		this.players= null;
 		
 		this.screenWidth= 640;
@@ -273,6 +286,9 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 		this.firstPlay= true;
 		
 		this.createBoard();
+		
+		this.mainBoard.restart();
+		
 		this.creategameIndicators();
 	}
 }
