@@ -31,6 +31,11 @@ public class TicTacToe
 	private int boardNumber= 0;
 	
 	/**
+	 * Variable that determines if the ticTacToe is not locked
+	 */
+	private boolean isUnlocked = true;
+	
+	/**
 	 * Constructor of the class
 	 */
 	public TicTacToe()
@@ -55,6 +60,23 @@ public class TicTacToe
 				this.board[row][col] = '-';
 			}
 		}
+	}
+	
+	/**
+	 * Method to return the state of the board, that it
+	 * if it is unlocked or not
+	 */
+	public boolean isUnlocked()
+	{
+		return this.isUnlocked;
+	}
+	
+	/**
+	 * Method that sets the unLocked variable to the parameter received
+	 */
+	public void unlock(boolean unlock)
+	{
+		this.isUnlocked = unlock;
 	}
 	
 	/**

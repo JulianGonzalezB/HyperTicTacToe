@@ -31,6 +31,9 @@ public class HyperTicTacToe
 	 */
 	private TicTacToe hyperBoard = null;
 	
+	/**
+	 * The character of the player, it can be 'X' or 'O'
+	 */
 	private char currentPlayer = ' ';
 	
 	/**
@@ -51,6 +54,10 @@ public class HyperTicTacToe
 		fillTicTacToeMatrix();
 	}
 	
+	/**
+	 * Method that fills the ticTacToeMatrix attribute with new 
+	 * ticTacToes in all of the positions of the matrix
+	 */
 	public void fillTicTacToeMatrix()
 	{
 		// Variable to identify the boards
@@ -97,21 +104,28 @@ public class HyperTicTacToe
 	 */
 	public boolean checkPlayerMove(int bigPosX, int bigPosY, int posX, int posY)
 	{
-		// If the cell clicked had not been used
-		if ( this.ticTacToesMatrix[bigPosX][bigPosY].get(posX, posY) == '-')
+		// If the ticTacToe clicked is unlocked
+		if ( this.ticTacToesMatrix[bigPosX][bigPosY].isUnlocked() )
 		{
-			// Sets the char of the cell to the char of the current player ('X' or 'O')
-			this.ticTacToesMatrix[bigPosX][bigPosY].set(posX,posY, this.currentPlayer);
-			
-			// Changes the current player
-			this.currentPlayer = (this.currentPlayer == 'X') ? 'O' : 'X';
-					
-			// Calls the method to detect if the last move changed the state of the board
-			checkBoard(bigPosX, bigPosY);
-			
-			// Returns true if the move was valid
-			return true;
-		}	
+			// If the cell clicked had not been used
+			if ( this.ticTacToesMatrix[bigPosX][bigPosY].get(posX, posY) == '-')
+			{
+				// Sets the char of the cell to the char of the current player ('X' or 'O')
+				this.ticTacToesMatrix[bigPosX][bigPosY].set(posX,posY, this.currentPlayer);
+				
+				// Changes the current player
+				this.currentPlayer = (this.currentPlayer == 'X') ? 'O' : 'X';
+						
+				// Calls the method to detect if the last move changed the state of the board
+				checkBoard(bigPosX, bigPosY);
+				
+				// Calls the method to set the lock property of the ticTacToes
+				setUnlockedCells(posX, posY);
+				
+				// Returns true if the move was valid
+				return true;
+			}	
+		}
 		
 		// Returns false if the move was not made in a valid place
 		return false;
@@ -146,5 +160,50 @@ public class HyperTicTacToe
 	{
 		// Returns the ticTacToesMatrix property
 		return this.ticTacToesMatrix;
+	}
+	
+	/**
+	 * Method that unlocks or locks all the matrixes that are still in play
+	 */
+	private void unlockAll(boolean unlock)
+	{
+		// Runs the matrix by each row and column
+		for (int row = 0; row < 3; ++row)
+		{
+			for (int col = 0; col < 3; ++col)
+			{
+				// If the matrix is still in play
+				if ( this.hyperBoard.get(row, col) == '-')
+				{
+					// Sets the lock element to the according boolean
+					this.ticTacToesMatrix[row][col].unlock(unlock);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Method that determines if a ticTacToe must by locked or unlocked
+	 * @param row the row of the cell clicked
+	 * @param col the column of the cell clicked
+	 */
+	public void setUnlockedCells(int row, int col)
+	{
+		// If the ticTacToe was still in play
+		if ( this.hyperBoard.get(row, col) == '-')
+		{
+			// Locks all the ticTacToes
+			unlockAll(false);
+			
+			// Sets the only unlocked matrix to the one clicked
+			this.ticTacToesMatrix[row][col].unlock(true);;
+		}
+		
+		// If the player chose a finished matrix, all of them are unlocked
+		else
+		{
+			// Unlocks all the matrixes
+			unlockAll(true);
+		}
 	}
 }
