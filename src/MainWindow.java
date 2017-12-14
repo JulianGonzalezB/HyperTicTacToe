@@ -101,9 +101,11 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 		indicators.setLayout(new BorderLayout());
 		
 		this.players= new JButton("Players");
+		this.players.addActionListener(this);
 		indicators.add(this.players, BorderLayout.LINE_START);
 		
 		this.restart = new JButton("RESTART");
+		this.restart.addActionListener(this);
 		indicators.add(restart, BorderLayout.LINE_END);
 		
 		this.add(indicators, BorderLayout.PAGE_START);
@@ -186,12 +188,14 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 		
 		
 		// If the player clicked on a valid position
-		if( positionX > this.screenWidth / 8 && positionX < 7 * this.screenWidth / 8 && positionY > 50 + this.screenHeight / 8 && positionY < 50 + 7 * this.screenHeight / 8)
+		if( positionX > this.screenWidth / 8 && positionX < 7 * this.screenWidth / 8 && positionY > this.screenHeight / 8 && positionY < 50 + 7 * this.screenHeight / 8)
 		{
 			int bigPosX= (positionX - this.screenWidth / 8) / (2 * this.screenWidth / 8);
-			int bigPosY= (positionY - (80 + this.screenHeight) / 8) / (2 * (80 + this.screenHeight) / 8);;
+			int bigPosY= (positionY - 105) / (2 * (this.screenHeight) / 8);
 			int xPosCell = ((positionX - this.screenWidth / 8) / (2 * this.screenWidth / 24)) % 3;
-			int yPosCell = ((positionY - 50 + this.screenHeight / 8) / (2 * this.screenHeight / 24)) % 3;
+			int yPosCell = ((positionY - 105) / (2 * this.screenHeight / 24)) % 3;
+			
+			System.err.printf("%d, %d%n",positionY, yPosCell);
 			
 			if(this.hyperTicTacToe.checkPlayerMove(bigPosX, bigPosY, xPosCell, yPosCell))
 			{
