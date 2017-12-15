@@ -1,9 +1,8 @@
 import javax.swing.JPanel;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import sun.audio.*;
+import java.io.*;
 
 /**
  * 
@@ -205,6 +204,8 @@ public class MainBoard extends JPanel
 		
 		this.firstPlay= false;
 		
+		this.soundEffect();
+		
 		this.repaint();
 	}
 	
@@ -218,7 +219,6 @@ public class MainBoard extends JPanel
 		{
 			for(int col= 0; col < 3; col++)
 			{
-				System.err.print(this.bigPositions.get(row, col));
 				if(this.bigPositions.get(row, col) == '-')
 				{
 					this.checkMiniBoards(row, col, g);
@@ -290,6 +290,34 @@ public class MainBoard extends JPanel
 		else
 		{
 			this.firstPlay= false;
+		}
+	}
+	
+	/**
+	 * 
+	 */
+	public void soundEffect()
+	{
+		String soundString= "C:\\Users\\randall\\HyperTicTacToe\\src\\beep-3.wav";
+		
+		try
+		{
+			InputStream sound= new FileInputStream(soundString);
+			
+			AudioStream audioStream= new AudioStream(sound);
+			
+			AudioPlayer.player.start(audioStream);
+			
+			AudioPlayer.player.start(audioStream);;
+			
+		}
+		catch(FileNotFoundException e)
+		{
+			System.err.println(e);
+		}
+		catch(IOException ex)
+		{
+			System.err.println(ex);
 		}
 	}
 	

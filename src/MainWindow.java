@@ -25,7 +25,7 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 	
 	private String currentPlayer= this.playerOne;
 	
-	private int currentPlayerNumber= 2;
+	private int currentPlayerNumber= 0;
 	
 	private HyperTicTacToe hyperTicTacToe= null;
 	
@@ -117,7 +117,12 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 		
 		this.restart = new JButton("RESTART");
 		this.restart.addActionListener(this);
-		indicators.add(restart, BorderLayout.LINE_END);
+		
+		
+		JPanel restartPanel= new JPanel();
+		restartPanel.setLayout(new FlowLayout());
+		restartPanel.add(restart);
+		indicators.add(restartPanel, BorderLayout.LINE_END);
 		
 		this.add(indicators, BorderLayout.PAGE_START);
 	}
@@ -129,7 +134,7 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 	public void setCurrentPlayer()
 	{
 		//Cheack the player in the current turn and sets and switch players
-		if(this.currentPlayerNumber == 1)
+		if(this.currentPlayerNumber == 1 || this.currentPlayerNumber == 0)
 		{
 			this.currentPlayer= this.playerOne;
 			
@@ -144,11 +149,6 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 		
 		//Change the label for showing the name of the next current player
 		this.playerInTurn.setText("Player : " + this.currentPlayer);
-		
-		if(!this.firstPlay)
-		{
-			this.players.setEnabled(false);
-		}
 	}
 
 	@Override
@@ -157,7 +157,12 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 		//Detects which button was pushed
 		if(event.getSource() == this.restart)
 		{
-			this.reset();
+			int answer= JOptionPane.showConfirmDialog(null, "Are you sure?");
+			
+			if(answer == JOptionPane.OK_OPTION)
+			{
+				this.reset();
+			}
 		}
 		else if(event.getSource() == this.players)
 		{
@@ -244,11 +249,11 @@ public class MainWindow extends JFrame implements MouseListener, ActionListener
 	{
 		String playerWinner= "";
 		
-		if(winner == 'O')
+		if(winner == 'X')
 		{
 			playerWinner= this.playerOne;
 		}
-		else if(winner == 'X')
+		else if(winner == 'O')
 		{
 			playerWinner= this.playerTwo;
 		}
